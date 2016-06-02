@@ -1,0 +1,3 @@
+BOLD -> *TEXT* -> <strong>TEXT</strong>
+ITAlIC -> #TEXT# -> <em>TEXT</em>
+PARAPH -> %TEXT% -> <p>TEXT</p>
