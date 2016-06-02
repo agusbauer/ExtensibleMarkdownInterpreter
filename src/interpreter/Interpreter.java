@@ -16,7 +16,7 @@ import jregex.Pattern;
 import jregex.Replacer;
 
 
-public class RegexExamples {
+public class Interpreter {
 
     private static final String RULE_SEPARATOR = "->";
     private static String TEXT = "TEXT";
@@ -24,38 +24,50 @@ public class RegexExamples {
     private static final int ORIGINAL_EXPRESSION = 1;
     private static final int REPLACER_EXPRESSION = 2;
     private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
-   // private static final int RULE_INDEX_COUNT = 3;
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
     
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+    	String textToTranslate = "";
+    	String rulesText = "";
         try {
-            readAndLoadRules();      
+        	textToTranslate = fileToString("text.txt");
+        	rulesText = fileToString("rules.txt");    
         } catch (IOException ex) {
-            Logger.getLogger(RegexExamples.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        String texto = "esto es texto con una pala bra en *ne  grita* otra en #cursiva# y otra en #sfdsfs  *negritacursiva* vhhhgc# y *#otra#*";
-        String result = translate(texto);
+        rules = getRulesFrom(rulesText);
+        String result = translate(textToTranslate);
         System.out.println(result);
-        
     }
     
     /**/
-    private static void readAndLoadRules() throws FileNotFoundException, IOException {
-        BufferedReader br = new BufferedReader(new FileReader("rules.txt"));
+    private static ArrayList<Rule> getRulesFrom(String rulesText) {
+        String rulesToObtain[] = rulesText.split("\n");
+        ArrayList<Rule> result = new ArrayList<Rule>();
+        for (int i = 0; i < rulesToObtain.length; i++) {
+        	   Rule newRule = textToRule(rulesToObtain[i]);
+        	   System.out.println(newRule);
+        	   result.add(newRule);
+		}
+        return result;
+    }
+    
+    private static String fileToString(String fileName) throws FileNotFoundException, IOException {
+        BufferedReader br = new BufferedReader(new FileReader(fileName));
+        String result = "";
         try {
             String line = br.readLine();
             while (line != null) {
-                Rule newRule = textToRule(line);
-                rules.add(newRule);
-                System.out.println(newRule.toString());
+            	result += line + "\n";
                 line = br.readLine();
             }
         } finally {
             br.close();
         }   
+        return result;
     }
     
     private static String translate(String textToTranslate){
@@ -96,7 +108,7 @@ public class RegexExamples {
             if(splittedExpr.length > 1)
                 result +=  splittedExpr[INITIAL_TOKEN] + "([\\p{Alpha}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedExpr[END_TOKEN];
             else
-                result += splittedExpr[INITIAL_TOKEN] + "((\\p{Graph})*)";
+                result += splittedExpr[INITIAL_TOKEN] + "([\\p{Graph}\\p{Blank}]*)";
         }
         else{
             if(splittedExpr.length > 1)
