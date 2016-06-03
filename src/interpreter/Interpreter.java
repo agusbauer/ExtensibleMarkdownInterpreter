@@ -23,6 +23,8 @@ public class Interpreter {
     private static final int RULE_NAME = 0;
     private static final int ORIGINAL_EXPRESSION = 1;
     private static final int REPLACER_EXPRESSION = 2;
+    private static final int INITIAL_TOKEN = 0;
+    private static final int END_TOKEN = 1;
     private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
     
@@ -86,37 +88,39 @@ public class Interpreter {
             return null;
         }
         String name = splittedLine[RULE_NAME].replace(" ","");
-        String originalRegExp = toRegularExpression(splittedLine[ORIGINAL_EXPRESSION],false);
-        String replacerRegExp = toRegularExpression(splittedLine[REPLACER_EXPRESSION],true);
+        String[] splittedOriginalExpression = splitCommonExpr(splittedLine[ORIGINAL_EXPRESSION]);
+        String[] splittedReplacerExpression = splitCommonExpr(splittedLine[REPLACER_EXPRESSION]);
+        String originalRegExp = originalExprToRegularExpr(splittedOriginalExpression);
+        String replacerRegExp = replacerExprToRegularExpr(splittedReplacerExpression);
         return new Rule(name,originalRegExp,replacerRegExp,rules.size()+1);
     }
     
-    private static String toRegularExpression(String commonExpression, boolean isReplacer){ //example #TEXT#
-        final int INITIAL_TOKEN = 0;
-        final int END_TOKEN = 1;
+    private static String[] splitCommonExpr(String commonExpression ){
+    	String[] splittedExpr = commonExpression.replace(" ","").split(TEXT);
+    	for (int i = 0; i < splittedExpr.length; i++) {
+    		splittedExpr[i] = addEscapeCharacters(splittedExpr[i]);
+		}
+    	return splittedExpr;
+    }
+    
+    private static String originalExprToRegularExpr(String[] splittedOriginalExpr){ //example #TEXT#
         String result = "";
-        String[] splittedExpr = commonExpression.replace(" ","").split(TEXT); // array example = {#,#}
-        String spCharWithoutCurrToken = SPECIAL_CHARACTERS.replace(splittedExpr[INITIAL_TOKEN], "");
-        /*add escapes characters*/
-        splittedExpr[INITIAL_TOKEN] = addEscapeCharacters(splittedExpr[INITIAL_TOKEN]);
-        if(splittedExpr.length > 1){
-            splittedExpr[END_TOKEN] = addEscapeCharacters(splittedExpr[END_TOKEN]);
-        }
-        spCharWithoutCurrToken =  addEscapeCharacters(spCharWithoutCurrToken);
-        
-        if(!isReplacer){
-            if(splittedExpr.length > 1)
-                result +=  splittedExpr[INITIAL_TOKEN] + "([\\p{Alpha}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedExpr[END_TOKEN];
-            else
-                result += splittedExpr[INITIAL_TOKEN] + "([\\p{Graph}\\p{Blank}]*)";
-        }
-        else{
-            if(splittedExpr.length > 1)
-                result += splittedExpr[INITIAL_TOKEN] + "$1" + splittedExpr[END_TOKEN];
-            else
-                result += splittedExpr[INITIAL_TOKEN] + "$1";
-        }      
+        String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
+        spCharWithoutCurrToken = spCharWithoutCurrToken.replace(splittedOriginalExpr[INITIAL_TOKEN], "");
+        if(splittedOriginalExpr.length > 1)
+            result +=  splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Alpha}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedOriginalExpr[END_TOKEN];
+        else
+            result += splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Graph}\\p{Blank}]*)";
         return result;
+    }
+    
+    private static String replacerExprToRegularExpr(String[] splittedReplacerExpr){
+        String result = "";
+		if(splittedReplacerExpr.length > 1)
+		    result += splittedReplacerExpr[INITIAL_TOKEN] + "$1" + splittedReplacerExpr[END_TOKEN];
+		else
+		    result += splittedReplacerExpr[INITIAL_TOKEN] + "$1";
+		 return result;
     }
     
     private static String addEscapeCharacters(String expression){
