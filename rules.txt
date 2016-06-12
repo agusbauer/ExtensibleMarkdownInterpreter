@@ -1,4 +1,4 @@
-BOLD -> **TEXT** -> <strong>TEXT</strong>
+BOLD -> &TEXT& -> <strong>TEXT</strong>
 ITAlIC -> *TEXT* -> <em>TEXT</em>
 TITLE3 -> ###TEXT -> <h3>TEXT</h3>
 TITLE2 -> ##TEXT -> <h2>TEXT</h2>
