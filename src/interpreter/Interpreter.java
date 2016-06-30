@@ -32,6 +32,7 @@ public class Interpreter {
     private static final int END_TOKEN = 1;
     private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
+    public static int istatic = 0;
     
     /**
      * @param args the command line arguments
@@ -45,9 +46,13 @@ public class Interpreter {
         } catch (IOException ex) {
             Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        rules = getRulesFrom(rulesText);
+        //rules = getRulesFrom(rulesText);
+        getRulesFrom(rulesText);
+        for (Rule rule : rules) { // esto es para printear nomas
+			System.out.println(rule);
+		}
         String result = translate(textToTranslate);
-        System.out.println(result);
+        System.out.println(result); // texto traducido
     }
     
     private static String fileToString(String fileName) throws FileNotFoundException, IOException {
@@ -66,50 +71,64 @@ public class Interpreter {
     }
     
     /**/
-    private static ArrayList<Rule> getRulesFrom(String rulesText) {
+    private static void getRulesFrom(String rulesText) {
         String rulesToObtain[] = rulesText.split("\n");
-        ArrayList<Rule> result = new ArrayList<Rule>();
+      //  ArrayList<Rule> result = new ArrayList<Rule>();
         for (int i = 0; i < rulesToObtain.length; i++) {
         	if(!rulesToObtain[i].isEmpty()){
 	        	Rule newRule = textToRule(rulesToObtain[i]);
-	        	System.out.println(newRule);
-	        	result.add(newRule);
+	        	//System.out.println(newRule);
+	        	rules.add(newRule);
         	}
 		}
-        return result;
+        //return result;
     }
     
     private static String translate(String textToTranslate){
-        for (int i = 0; i < rules.size(); i++) {
-    		Pattern pattern = new Pattern(rules.get(i).getOriginalExpression());
-            Replacer replacer = pattern.replacer(rules.get(i).getReplacerExpression());
-            textToTranslate = replacer.replace(textToTranslate);
-        	          
+        for ( istatic = 0; istatic < rules.size(); istatic++) {
+        	
+        	if(rules.get(istatic).getSubrules().size() > 0 ){
+        		/* PARSEO DE LISTAS */
+               /* String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
+                spCharWithoutCurrToken = spCharWithoutCurrToken.replace("-", "");
+                Pattern pattern = new Pattern("-"+ "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + "-");*/
+        		
+        		//System.out.println(rules.get(istatic).getSubrules().size());
+        		
+                Substitution myOwnModel=new Substitution(){
+        			@Override
+        			public void appendSubstitution(MatchResult match, TextBuffer tb) {
+        				//Pattern p = new Pattern("1."+ "([\\p{Graph}\\p{Blank}]*)");
+        				//Replacer r = p.replacer("<il>"+"$1"+"</il>");
+        				//System.out.println(Interpreter.istatic);
+        				
+        				Pattern p = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
+        				Replacer r = p.replacer(rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression());
+        				String replacedMatch = r.replace(match.toString());
+        				//p = new Pattern("-"+ "([\\p{Blank}]*)");
+        				//r = p.replacer("$1");
+        				//replacedMatch = r.replace(replacedMatch);
+        				//tb.append("<ol>");
+        				tb.append(replacedMatch); 
+        				//match.getGroup(MatchResult.MATCH,tb);
+        	            //tb.append("</ol>");
+        			}
+                 };
+                 Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
+                 Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
+                 Replacer r2 = pattern.replacer(rules.get(istatic).getReplacerExpression());
+                 textToTranslate = myVeryOwnReplacer.replace(textToTranslate);  
+                 textToTranslate = r2.replace(textToTranslate);
+                 /* FIN PARSEO DE LISTAS */
+        	}
+        	else{
+        		Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
+                Replacer replacer = pattern.replacer(rules.get(istatic).getReplacerExpression());
+                textToTranslate = replacer.replace(textToTranslate);
+        	} 	          
         }
+        return textToTranslate;
         
-        /* PARSEO DE LISTAS */
-        String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
-        spCharWithoutCurrToken = spCharWithoutCurrToken.replace("-", "");
-        Pattern pattern = new Pattern("-"+ "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + "-");
-        Substitution myOwnModel=new Substitution(){
-			@Override
-			public void appendSubstitution(MatchResult match, TextBuffer tb) {
-				Pattern p = new Pattern("1."+ "([\\p{Graph}\\p{Blank}]*)");
-				Replacer r = p.replacer("<il>"+"$1"+"</il>");
-				String replacedMatch = r.replace(match.toString());
-				p = new Pattern("-"+ "([\\p{Blank}]*)");
-				r = p.replacer("$1");
-				replacedMatch = r.replace(replacedMatch);
-				tb.append("<ol>");
-				tb.append(replacedMatch); 
-				//match.getGroup(MatchResult.MATCH,tb);
-	            tb.append("</ol>");
-			}
-         };
-         Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
-         textToTranslate = myVeryOwnReplacer.replace(textToTranslate);
-         return textToTranslate;
-         /* FIN PARSEO DE LISTAS */
     }
     
     private static Rule textToRule(String line){
@@ -119,15 +138,44 @@ public class Interpreter {
             return null;
         }
         String name = splittedLine[RULE_NAME].replace(" ","");
+        
         String[] splittedOriginalExpression = splitCommonExpr(splittedLine[ORIGINAL_EXPRESSION]);
         String[] splittedReplacerExpression = splitCommonExpr(splittedLine[REPLACER_EXPRESSION]);
         String originalRegExp = originalExprToRegularExpr(splittedOriginalExpression);
         String replacerRegExp = replacerExprToRegularExpr(splittedReplacerExpression);
-        return new Rule(name,originalRegExp,replacerRegExp,rules.size()+1);
+        Rule subrule = obtainSubrule(splittedLine[ORIGINAL_EXPRESSION]);
+        return new Rule(name,originalRegExp,replacerRegExp,rules.size()+1,subrule);
+    }
+    
+    
+    private static Rule obtainSubrule(String expression){
+    	Rule result = null;
+    	int i = 0;
+    	for (i = 0; i < rules.size() && !expression.contains(rules.get(i).getName()); i++) {
+		}
+    	if(i < rules.size()){
+    		
+    		result = rules.get(i);
+    		rules.remove(i);
+    	}
+    	return result;
     }
     
     private static String[] splitCommonExpr(String commonExpression ){
-    	String[] splittedExpr = commonExpression.replace(" ","").split(TEXT);
+    	
+    	String[] splittedExpr = null;
+    	if(commonExpression.contains(TEXT)){
+    		splittedExpr = commonExpression.replace(" ","").split(TEXT);
+    	}
+    	else{
+    		for (Rule rule : rules) { //lo hago de vuelta para poder obtener el incio y fin de la expresion
+    			if(commonExpression.contains(rule.getName())){   				
+    				splittedExpr = commonExpression.replace(" ","").split(rule.getName());
+    				break;
+    			}
+    		}
+    	}
+    	//System.out.println(splittedExpr.length);
     	for (int i = 0; i < splittedExpr.length; i++) {
     		splittedExpr[i] = addEscapeCharacters(splittedExpr[i]);
 		}
@@ -139,7 +187,7 @@ public class Interpreter {
         String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
         spCharWithoutCurrToken = spCharWithoutCurrToken.replace(splittedOriginalExpr[INITIAL_TOKEN], "");
         if(splittedOriginalExpr.length > 1)
-            result +=  splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Alpha}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedOriginalExpr[END_TOKEN];
+            result +=  splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedOriginalExpr[END_TOKEN];
         else
             result += splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Graph}\\p{Blank}]*)";
         return result;
@@ -153,12 +201,7 @@ public class Interpreter {
 		    result += splittedReplacerExpr[INITIAL_TOKEN] + "$1";
 		 return result;
     }
-    
-    private static List<String> replacerExprToNestedRegExp(String[] splittedReplacerExpr){
-    	List<String> result = new ArrayList<>();
-    	
-    	return result;
-    }
+
     
     
     private static String addEscapeCharacters(String expression){

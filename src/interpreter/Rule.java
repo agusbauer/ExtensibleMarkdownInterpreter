@@ -5,6 +5,8 @@ package interpreter;
  * and open the template in the editor.
  */
 
+import java.util.ArrayList;
+
 /**
  *
  * @author agustin
@@ -15,12 +17,16 @@ public class Rule {
     private String originalExpression;
     private String replacerExpression;
     private Integer id;
+    private ArrayList<Rule> subrules;
     
-    public Rule(String name, String originalExp, String translatedExp, Integer id) {
+    public Rule(String name, String originalExp, String translatedExp, Integer id, Rule subrule) {
+    	subrules = new ArrayList<>();
         this.name = name;
         this.originalExpression = originalExp;
         this.replacerExpression = translatedExp;
         this.id = id;
+        if(subrule != null)
+        	this.subrules.add(subrule);
     }
     
     public Rule() {
@@ -62,8 +68,20 @@ public class Rule {
         this.id = id;
     }
 
-    @Override
+    
+    
+    public ArrayList<Rule> getSubrules() {
+		return subrules;
+	}
+
+	public void setSubrules(ArrayList<Rule> subrules) {
+		this.subrules = subrules;
+	}
+
+	@Override
     public String toString() {
+		if(subrules.size() > 0)
+			System.out.println(subrules.get(0).getName());
         return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + '}';
     }
 
