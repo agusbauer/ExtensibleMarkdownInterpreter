@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
+
 import jregex.MatchResult;
 import jregex.Matcher;
 import jregex.Pattern;
@@ -31,6 +33,7 @@ public class Interpreter {
     private static final int INITIAL_TOKEN = 0;
     private static final int END_TOKEN = 1;
     private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+    private static final String  EXPR_WITHOUT_BEGIN_AND_END = "([\\p{Alnum}\\p{Space}"+ "!\"#$%&'()\\*\\+,-./:;<=>?@[\\]^_`\\{|\\}~" +"]*)";
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
     public static int istatic = 0;
     
@@ -85,41 +88,9 @@ public class Interpreter {
     }
     
     private static String translate(String textToTranslate){
-        for ( istatic = 0; istatic < rules.size(); istatic++) {
-        	
-        	if(rules.get(istatic).getSubrules().size() > 0 ){
-        		/* PARSEO DE LISTAS */
-               /* String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
-                spCharWithoutCurrToken = spCharWithoutCurrToken.replace("-", "");
-                Pattern pattern = new Pattern("-"+ "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + "-");*/
-        		
-        		//System.out.println(rules.get(istatic).getSubrules().size());
-        		
-                Substitution myOwnModel=new Substitution(){
-        			@Override
-        			public void appendSubstitution(MatchResult match, TextBuffer tb) {
-        				//Pattern p = new Pattern("1."+ "([\\p{Graph}\\p{Blank}]*)");
-        				//Replacer r = p.replacer("<il>"+"$1"+"</il>");
-        				//System.out.println(Interpreter.istatic);
-        				
-        				Pattern p = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
-        				Replacer r = p.replacer(rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression());
-        				String replacedMatch = r.replace(match.toString());
-        				//p = new Pattern("-"+ "([\\p{Blank}]*)");
-        				//r = p.replacer("$1");
-        				//replacedMatch = r.replace(replacedMatch);
-        				//tb.append("<ol>");
-        				tb.append(replacedMatch); 
-        				//match.getGroup(MatchResult.MATCH,tb);
-        	            //tb.append("</ol>");
-        			}
-                 };
-                 Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
-                 Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
-                 Replacer r2 = pattern.replacer(rules.get(istatic).getReplacerExpression());
-                 textToTranslate = myVeryOwnReplacer.replace(textToTranslate);  
-                 textToTranslate = r2.replace(textToTranslate);
-                 /* FIN PARSEO DE LISTAS */
+        for ( istatic = 0; istatic < rules.size(); istatic++) {   	
+        	if(rules.get(istatic).getSubrules().size() > 0 ){      		     
+                 textToTranslate = nestedRulesParser(textToTranslate);
         	}
         	else{
         		Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
@@ -127,8 +98,43 @@ public class Interpreter {
                 textToTranslate = replacer.replace(textToTranslate);
         	} 	          
         }
-        return textToTranslate;
-        
+        return textToTranslate;       
+    }
+    
+    private static String nestedRulesParser(String txtToTranslate){
+    	if(rules.get(Interpreter.istatic).getOriginalExpression().equals(EXPR_WITHOUT_BEGIN_AND_END)){ // listas sin marca inicial ni final
+    		String[] replExprSPlitted = rules.get(Interpreter.istatic).getReplacerExpression().split("\\$1");
+    		String patternStr = "";
+    		if(replExprSPlitted.length == 2){
+    			patternStr = replExprSPlitted[0] + rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression() + replExprSPlitted[1];
+    		}
+    		Pattern pattern = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
+    		Replacer rep = pattern.replacer(patternStr);
+    		txtToTranslate =  rep.replace(txtToTranslate);
+    		
+    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);
+    		rep = pattern.replacer("$1");   		
+    		txtToTranslate =  rep.replace(txtToTranslate);
+    		
+    		return txtToTranslate;
+    	}
+    	else{ //listas con marca inicial y final
+    		Substitution myOwnModel=new Substitution(){
+    			@Override
+    			public void appendSubstitution(MatchResult match, TextBuffer tb) {
+    				Pattern p = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
+    				Replacer r = p.replacer(rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression());
+    				String replacedMatch = r.replace(match.toString());
+    				tb.append(replacedMatch); 
+    			}
+             };
+             Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
+             Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
+             Replacer r2 = pattern.replacer(rules.get(istatic).getReplacerExpression());
+             txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
+             txtToTranslate = r2.replace(txtToTranslate);
+             return txtToTranslate;
+    	}	
     }
     
     private static Rule textToRule(String line){
@@ -153,8 +159,7 @@ public class Interpreter {
     	int i = 0;
     	for (i = 0; i < rules.size() && !expression.contains(rules.get(i).getName()); i++) {
 		}
-    	if(i < rules.size()){
-    		
+    	if(i < rules.size()){ 		
     		result = rules.get(i);
     		rules.remove(i);
     	}
@@ -162,7 +167,6 @@ public class Interpreter {
     }
     
     private static String[] splitCommonExpr(String commonExpression ){
-    	
     	String[] splittedExpr = null;
     	if(commonExpression.contains(TEXT)){
     		splittedExpr = commonExpression.replace(" ","").split(TEXT);
@@ -175,7 +179,11 @@ public class Interpreter {
     			}
     		}
     	}
-    	//System.out.println(splittedExpr.length);
+    	if(splittedExpr.length == 0){ //si es 0 es por que no tiene caracteres de principio ni fin le doy vacio para que no sea null
+    		splittedExpr = new String[2];//se usa basicamente para las listas como las defina markdown
+    		splittedExpr[0] = "";
+    		splittedExpr[1] = "";
+    	}
     	for (int i = 0; i < splittedExpr.length; i++) {
     		splittedExpr[i] = addEscapeCharacters(splittedExpr[i]);
 		}

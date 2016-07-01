@@ -1,9 +1,8 @@
 ***hhhhh*  ddd  **
 ##titulo2
-1.asdasddd
--
-    1.elemento
-    1.elemento2
-    1.elemento3
--
-&asdasdad&
+BEGIN
+	+elemento *chau*
+	+elemento2
+	+elemento3
+END
+#asdasdad

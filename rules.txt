@@ -4,5 +4,5 @@ TITLE3 -> ###TEXT -> <h3>TEXT</h3>
 TITLE2 -> ##TEXT -> <h2>TEXT</h2>
 TITLE1 -> #TEXT -> <h1>TEXT</h1>
 
-ITEM -> 1.TEXT -> <il>TEXT</il>
-LIST -> -ITEM- ->  <ol>ITEM</ol>
+ITEM -> +TEXT -> <il>TEXT</il>
+LIST ->  BEGIN ITEM END->  <ol>ITEM</ol>
