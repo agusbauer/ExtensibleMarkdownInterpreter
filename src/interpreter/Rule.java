@@ -20,7 +20,7 @@ public class Rule {
     private ArrayList<Rule> subrules;
     
     public Rule(String name, String originalExp, String translatedExp, Integer id, Rule subrule) {
-    	subrules = new ArrayList<>();
+    	subrules = new ArrayList<Rule>();
         this.name = name;
         this.originalExpression = originalExp;
         this.replacerExpression = translatedExp;
@@ -80,8 +80,7 @@ public class Rule {
 
 	@Override
     public String toString() {
-		if(subrules.size() > 0)
-			System.out.println(subrules.get(0).getName());
+		
         return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + '}';
     }
 

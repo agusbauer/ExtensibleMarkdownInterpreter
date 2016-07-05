@@ -35,7 +35,7 @@ public class Interpreter {
     private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
     private static final String  EXPR_WITHOUT_BEGIN_AND_END = "([\\p{Alnum}\\p{Space}"+ "!\"#$%&'()\\*\\+,-./:;<=>?@[\\]^_`\\{|\\}~" +"]*)";
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
-    public static int istatic = 0;
+    public static Rule currentStaticRule = null;
     
     /**
      * @param args the command line arguments
@@ -51,9 +51,18 @@ public class Interpreter {
         }
         //rules = getRulesFrom(rulesText);
         getRulesFrom(rulesText);
-        for (Rule rule : rules) { // esto es para printear nomas
+      /*  for (Rule rule : rules) { // esto es para printear nomas
 			System.out.println(rule);
-		}
+			if(!rule.getSubrules().isEmpty()){
+				System.out.println("subregla de "+rule.getName());
+				System.out.println(rule.getSubrules());
+				if(!rule.getSubrules().get(0).getSubrules().isEmpty()){
+					System.out.println("subregla de "+rule.getSubrules().get(0).getName());
+					System.out.println(rule.getSubrules().get(0).getSubrules().get(0));
+					
+				}
+			}
+		}*/
         String result = translate(textToTranslate);
         System.out.println(result); // texto traducido
     }
@@ -88,13 +97,14 @@ public class Interpreter {
     }
     
     private static String translate(String textToTranslate){
-        for ( istatic = 0; istatic < rules.size(); istatic++) {   	
-        	if(rules.get(istatic).getSubrules().size() > 0 ){      		     
-                 textToTranslate = nestedRulesParser(textToTranslate);
+        for ( int i = 0; i < rules.size(); i++) {   	
+        	if(rules.get(i).getSubrules().size() > 0 ){  
+        		currentStaticRule = rules.get(i);
+                textToTranslate = nestedRulesParser(textToTranslate);
         	}
         	else{
-        		Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
-                Replacer replacer = pattern.replacer(rules.get(istatic).getReplacerExpression());
+        		Pattern pattern = new Pattern(rules.get(i).getOriginalExpression());
+                Replacer replacer = pattern.replacer(rules.get(i).getReplacerExpression());
                 textToTranslate = replacer.replace(textToTranslate);
         	} 	          
         }
@@ -102,13 +112,13 @@ public class Interpreter {
     }
     
     private static String nestedRulesParser(String txtToTranslate){
-    	if(rules.get(Interpreter.istatic).getOriginalExpression().equals(EXPR_WITHOUT_BEGIN_AND_END)){ // listas sin marca inicial ni final
-    		String[] replExprSPlitted = rules.get(Interpreter.istatic).getReplacerExpression().split("\\$1");
+    	if(currentStaticRule.getOriginalExpression().equals(EXPR_WITHOUT_BEGIN_AND_END)){ // listas sin marca inicial ni final
+    		String[] replExprSPlitted = currentStaticRule.getReplacerExpression().split("\\$1");
     		String patternStr = "";
     		if(replExprSPlitted.length == 2){
-    			patternStr = replExprSPlitted[0] + rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression() + replExprSPlitted[1];
+    			patternStr = replExprSPlitted[0] + currentStaticRule.getSubrules().get(0).getReplacerExpression() + replExprSPlitted[1];
     		}
-    		Pattern pattern = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
+    		Pattern pattern = new Pattern(currentStaticRule.getSubrules().get(0).getOriginalExpression());
     		Replacer rep = pattern.replacer(patternStr);
     		txtToTranslate =  rep.replace(txtToTranslate);
     		
@@ -122,18 +132,32 @@ public class Interpreter {
     		Substitution myOwnModel=new Substitution(){
     			@Override
     			public void appendSubstitution(MatchResult match, TextBuffer tb) {
-    				Pattern p = new Pattern(rules.get(Interpreter.istatic).getSubrules().get(0).getOriginalExpression());
-    				Replacer r = p.replacer(rules.get(Interpreter.istatic).getSubrules().get(0).getReplacerExpression());
-    				String replacedMatch = r.replace(match.toString());
+    				String replacedMatch = "";
+    				if (!currentStaticRule.getSubrules().get(0).getSubrules().isEmpty()){//SUB SUB
+    					Rule subSubRule = currentStaticRule.getSubrules().get(0).getSubrules().get(0);
+    					Pattern p = new Pattern(subSubRule.getOriginalExpression());
+    					Replacer r = p.replacer(subSubRule.getReplacerExpression());
+    					replacedMatch = r.replace(match.toString());
+    	    		}
+    	            Rule subRule = currentStaticRule.getSubrules().get(0);
+    				Pattern p2 = new Pattern(subRule.getOriginalExpression());
+    				Replacer r2 = p2.replacer(subRule.getReplacerExpression());
+    				if (replacedMatch != "")
+    					replacedMatch = r2.replace(replacedMatch);
+    				else
+    					replacedMatch = r2.replace(match.toString());
     				tb.append(replacedMatch); 
     			}
              };
-             Pattern pattern = new Pattern(rules.get(istatic).getOriginalExpression());
-             Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
-             Replacer r2 = pattern.replacer(rules.get(istatic).getReplacerExpression());
-             txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
-             txtToTranslate = r2.replace(txtToTranslate);
-             return txtToTranslate;
+             
+              
+              Pattern pattern = new Pattern(currentStaticRule.getOriginalExpression());
+              Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
+              Replacer r2 = pattern.replacer(currentStaticRule.getReplacerExpression());
+              txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
+              txtToTranslate = r2.replace(txtToTranslate);
+             
+              return txtToTranslate;
     	}	
     }
     
