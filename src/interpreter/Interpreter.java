@@ -8,7 +8,9 @@ package interpreter;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -65,6 +67,9 @@ public class Interpreter {
 		}*/
         String result = translate(textToTranslate);
         System.out.println(result); // texto traducido
+        //generar archivo .html
+        generateHtmlFile(result);
+        
     }
     
     private static String fileToString(String fileName) throws FileNotFoundException, IOException {
@@ -243,5 +248,28 @@ public class Interpreter {
             result = result.replace(character, "\\" + character);
         }
         return result;
+    }
+    
+    private static void generateHtmlFile(String result){
+    	FileWriter resultFile = null;
+        PrintWriter pw = null;
+        try
+        {
+            resultFile = new FileWriter("result.html");
+            pw = new PrintWriter(resultFile);
+            pw.println("<!DOCTYPE html>\n<html>\n<body>\n");
+            pw.println(result);
+            pw.println("\n</body>\n</html>");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           if (null != resultFile)
+        	   resultFile.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
     }
 }
