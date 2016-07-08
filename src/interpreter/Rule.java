@@ -14,16 +14,20 @@ import java.util.ArrayList;
 public class Rule {
     
     private String name;
+    private Delimiters originalExprDelimiters;
+    private Delimiters replacerExprDelimiters;
     private String originalExpression;
     private String replacerExpression;
     private Integer id;
     private ArrayList<Rule> subrules;
     
-    public Rule(String name, String originalExp, String translatedExp, Integer id, Rule subrule) {
+    public Rule(String name, Delimiters originalExprDelimiters, Delimiters replacerExprDelimiters, Integer id, Rule subrule) {
     	subrules = new ArrayList<Rule>();
         this.name = name;
-        this.originalExpression = originalExp;
-        this.replacerExpression = translatedExp;
+        this.originalExprDelimiters = originalExprDelimiters;
+        this.replacerExprDelimiters = replacerExprDelimiters;
+        this.originalExpression = generateOriginalExpression();
+        this.replacerExpression = generateReplacerExpression();
         this.id = id;
         if(subrule != null)
         	this.subrules.add(subrule);
@@ -35,6 +39,41 @@ public class Rule {
         this.replacerExpression = "";
         this.id = -1;
     }
+    
+    private String generateOriginalExpression(){ 
+        String result = "";
+        String spCharWithoutCurrToken = Utils.removeTokens(Utils.SPECIAL_CHARACTERS, originalExprDelimiters.getBeginToken());
+       
+        spCharWithoutCurrToken =  Utils.addEscapeCharacters(spCharWithoutCurrToken);
+        String beginDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getBeginToken());
+        
+        if(!originalExprDelimiters.getEndToken().isEmpty()){
+        	
+        	String endDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getEndToken());
+            result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]+)" + endDelimiterEscaped ;
+        }
+        else{
+            result += beginDelimiterEscaped + "([\\p{Graph}\\p{Blank}]*)";
+        }
+        return result;
+    }   
+    
+    private String generateReplacerExpression(){
+        String result = "";
+        String beginDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getBeginToken());
+        String endDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getEndToken());
+		if(!replacerExprDelimiters.getEndToken().isEmpty()){
+			
+		    result += beginDelimiterEscaped + "$1" + endDelimiterEscaped;
+		}
+		else{
+		    result += beginDelimiterEscaped + "$1";
+		}
+		return result;
+    }
+
+    
+    /************************** Getters and Setters Section **************************/
     
     public String getName() {
         return name;
@@ -67,16 +106,33 @@ public class Rule {
     public void setId(Integer id) {
         this.id = id;
     }
+    
 
-    
-    
-    public ArrayList<Rule> getSubrules() {
+	public Delimiters getOriginalExprDelimiters() {
+		return originalExprDelimiters;
+	}
+
+	public void setOriginalExprDelimiters(Delimiters originalExprDelimiters) {
+		this.originalExprDelimiters = originalExprDelimiters;
+	}
+
+	public Delimiters getReplacerExprDelimiters() {
+		return replacerExprDelimiters;
+	}
+
+	public void setReplacerExprDelimiters(Delimiters replacerExprDelimiters) {
+		this.replacerExprDelimiters = replacerExprDelimiters;
+	}
+
+	public ArrayList<Rule> getSubrules() {
 		return subrules;
 	}
 
 	public void setSubrules(ArrayList<Rule> subrules) {
 		this.subrules = subrules;
 	}
+	/************************** End Getters and Setters Section **************************/
+	
 
 	@Override
     public String toString() {

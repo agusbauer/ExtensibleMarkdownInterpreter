@@ -12,14 +12,13 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
 import jregex.MatchResult;
-import jregex.Matcher;
+
 import jregex.Pattern;
 import jregex.Replacer;
 import jregex.Substitution;
@@ -32,10 +31,7 @@ public class Interpreter {
     public static final int RULE_NAME = 0;
     private static final int ORIGINAL_EXPRESSION = 1;
     private static final int REPLACER_EXPRESSION = 2;
-    private static final int INITIAL_TOKEN = 0;
-    private static final int END_TOKEN = 1;
-    private static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
-    private static final String  EXPR_WITHOUT_BEGIN_AND_END = "([\\p{Alnum}\\p{Space}"+ "!\"#$%&'()\\*\\+,-./:;<=>?@[\\]^_`\\{|\\}~" +"]*)";
+    
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
     public static Rule currentStaticRule = null;
     
@@ -117,7 +113,7 @@ public class Interpreter {
     }
     
     private static String nestedRulesParser(String txtToTranslate){
-    	if(currentStaticRule.getOriginalExpression().equals(EXPR_WITHOUT_BEGIN_AND_END)){ // listas sin marca inicial ni final
+    	if(currentStaticRule.getOriginalExprDelimiters().areEmpties()){ // listas sin marca inicial ni final
     		String[] replExprSPlitted = currentStaticRule.getReplacerExpression().split("\\$1");
     		String patternStr = "";
     		if(replExprSPlitted.length == 2){
@@ -174,14 +170,13 @@ public class Interpreter {
         }
         String name = splittedLine[RULE_NAME].replace(" ","");
         
-        String[] splittedOriginalExpression = splitCommonExpr(splittedLine[ORIGINAL_EXPRESSION]);
-        String[] splittedReplacerExpression = splitCommonExpr(splittedLine[REPLACER_EXPRESSION]);
-        String originalRegExp = originalExprToRegularExpr(splittedOriginalExpression);
-        String replacerRegExp = replacerExprToRegularExpr(splittedReplacerExpression);
+        Delimiters orginalExpressionDelimiters = obtainDelimiters(splittedLine[ORIGINAL_EXPRESSION]);
+        Delimiters replacerExpressionDelimiters = obtainDelimiters(splittedLine[REPLACER_EXPRESSION]);
+        //String originalRegExp = originalExprToRegularExpr(splittedOriginalExpression);
+        //String replacerRegExp = replacerExprToRegularExpr(splittedReplacerExpression);
         Rule subrule = obtainSubrule(splittedLine[ORIGINAL_EXPRESSION]);
-        return new Rule(name,originalRegExp,replacerRegExp,rules.size()+1,subrule);
-    }
-    
+        return new Rule(name,orginalExpressionDelimiters,replacerExpressionDelimiters,rules.size()+1,subrule);
+    }  
     
     private static Rule obtainSubrule(String expression){
     	Rule result = null;
@@ -195,8 +190,9 @@ public class Interpreter {
     	return result;
     }
     
-    private static String[] splitCommonExpr(String commonExpression ){
-    	String[] splittedExpr = null;
+    private static Delimiters obtainDelimiters(String commonExpression ){
+    	Delimiters result = new Delimiters();
+    	String[] splittedExpr = new String[0]; //si no anda poner null aca
     	if(commonExpression.contains(TEXT)){
     		splittedExpr = commonExpression.replace(" ","").split(TEXT);
     	}
@@ -208,46 +204,13 @@ public class Interpreter {
     			}
     		}
     	}
-    	if(splittedExpr.length == 0){ //si es 0 es por que no tiene caracteres de principio ni fin le doy vacio para que no sea null
-    		splittedExpr = new String[2];//se usa basicamente para las listas como las defina markdown
-    		splittedExpr[0] = "";
-    		splittedExpr[1] = "";
+    	if(splittedExpr.length >= 1){ 
+    		result.setBeginToken(splittedExpr[0]);
+    		if(splittedExpr.length == 2){
+    			result.setEndToken(splittedExpr[1]);
+    		}
     	}
-    	for (int i = 0; i < splittedExpr.length; i++) {
-    		splittedExpr[i] = addEscapeCharacters(splittedExpr[i]);
-		}
-    	return splittedExpr;
-    }
-    
-    private static String originalExprToRegularExpr(String[] splittedOriginalExpr){ //example #TEXT#
-        String result = "";
-        String spCharWithoutCurrToken =  addEscapeCharacters(SPECIAL_CHARACTERS);
-        spCharWithoutCurrToken = spCharWithoutCurrToken.replace(splittedOriginalExpr[INITIAL_TOKEN], "");
-        if(splittedOriginalExpr.length > 1)
-            result +=  splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + splittedOriginalExpr[END_TOKEN];
-        else
-            result += splittedOriginalExpr[INITIAL_TOKEN] + "([\\p{Graph}\\p{Blank}]*)";
-        return result;
-    }   
-    
-    private static String replacerExprToRegularExpr(String[] splittedReplacerExpr){
-        String result = "";
-		if(splittedReplacerExpr.length > 1)
-		    result += splittedReplacerExpr[INITIAL_TOKEN] + "$1" + splittedReplacerExpr[END_TOKEN];
-		else
-		    result += splittedReplacerExpr[INITIAL_TOKEN] + "$1";
-		 return result;
-    }
-
-    
-    
-    private static String addEscapeCharacters(String expression){
-        String result = expression;
-        String[] charactersToEscape = {"*","+","{","}"};
-        for (String character : charactersToEscape) {
-            result = result.replace(character, "\\" + character);
-        }
-        return result;
+    	return result;
     }
     
     private static void generateHtmlFile(String result){
