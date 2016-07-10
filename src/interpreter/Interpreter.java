@@ -61,7 +61,12 @@ public class Interpreter {
 				}
 			}
 		}*/
-        String result = translate(textToTranslate);
+        String[] splittedText = textToTranslate.split("/body/");
+    	if(splittedText.length != 3){
+    		System.out.println("Error: Faltan delimitadores principales (/body/)");
+    	}
+        String translatedText = translate(splittedText[1]);
+        String result = splittedText[0] + translatedText + splittedText[2];
         System.out.println(result); // texto traducido
         //generar archivo .html
         generateHtmlFile(result);
@@ -98,6 +103,7 @@ public class Interpreter {
     }
     
     private static String translate(String textToTranslate){
+    	
         for ( int i = 0; i < rules.size(); i++) {   	
         	if(rules.get(i).getSubrules().size() > 0 ){  
         		currentStaticRule = rules.get(i);
@@ -219,10 +225,8 @@ public class Interpreter {
         try
         {
             resultFile = new FileWriter("result.html");
-            pw = new PrintWriter(resultFile);
-            pw.println("<!DOCTYPE html>\n<html>\n<body>\n");
-            pw.println(result);
-            pw.println("\n</body>\n</html>");
+            pw = new PrintWriter(resultFile);           
+            pw.println(result);          
 
         } catch (Exception e) {
             e.printStackTrace();

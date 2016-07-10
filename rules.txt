@@ -4,7 +4,7 @@ TITLE3 -> ###TEXT -> <h3>TEXT</h3>
 TITLE2 -> ##TEXT -> <h2>TEXT</h2>
 TITLE1 -> #TEXT -> <h1>TEXT</h1>
 
-ITEM -> +TEXT -> <il>TEXT</il>
+ITEM -> +TEXT -> <li>TEXT</li>
 LIST ->  BEGIN ITEM END->  <ol>ITEM</ol>
 
 COL -> {TEXT} -> <td>TEXT</td>
