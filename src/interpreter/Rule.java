@@ -42,13 +42,10 @@ public class Rule {
     
     private String generateOriginalExpression(){ 
         String result = "";
-        String spCharWithoutCurrToken = Utils.removeTokens(Utils.SPECIAL_CHARACTERS, originalExprDelimiters.getBeginToken());
-       
+        String spCharWithoutCurrToken = Utils.removeTokens(Utils.SPECIAL_CHARACTERS, originalExprDelimiters.getBeginToken());      
         spCharWithoutCurrToken =  Utils.addEscapeCharacters(spCharWithoutCurrToken);
-        String beginDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getBeginToken());
-        
-        if(!originalExprDelimiters.getEndToken().isEmpty()){
-        	
+        String beginDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getBeginToken());       
+        if(!originalExprDelimiters.getEndToken().isEmpty()){       	
         	String endDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getEndToken());
             result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]+)" + endDelimiterEscaped ;
         }

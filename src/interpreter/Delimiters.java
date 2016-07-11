@@ -19,6 +19,10 @@ public class Delimiters {
 		return beginToken.isEmpty() && endToken.isEmpty();
 	}
 	
+	public boolean areEquals(){
+		return beginToken.equals(endToken);
+	}
+	
 	public String getBeginToken() {
 		return beginToken;
 	}

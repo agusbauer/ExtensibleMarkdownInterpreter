@@ -12,7 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
+import java.util.SplittableRandom;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -102,21 +102,88 @@ public class Interpreter {
         //return result;
     }
     
-    private static String translate(String textToTranslate){
-    	
+    private static String translate(String textToTranslate){   	
         for ( int i = 0; i < rules.size(); i++) {   	
         	if(rules.get(i).getSubrules().size() > 0 ){  
         		currentStaticRule = rules.get(i);
                 textToTranslate = nestedRulesParser(textToTranslate);
         	}
         	else{
-        		Pattern pattern = new Pattern(rules.get(i).getOriginalExpression());
+        		/*Pattern pattern = new Pattern(rules.get(i).getOriginalExpression());
                 Replacer replacer = pattern.replacer(rules.get(i).getReplacerExpression());
-                textToTranslate = replacer.replace(textToTranslate);
+                textToTranslate = replacer.replace(textToTranslate);*/
+        		textToTranslate = replaceExpr(textToTranslate, rules.get(i));
         	} 	          
         }
         return textToTranslate;       
     }
+    
+    private static String replaceExpr(String txt, Rule rule){ //hay que modularizar un poco este metodo
+    	if(rule == null){
+    		return txt;
+    	}
+    	String result = txt;
+    	//System.out.println(rule.getOriginalExprDelimiters().getBeginToken());
+    	if(!rule.getOriginalExprDelimiters().getEndToken().isEmpty()){
+    		txt = txt.replace("\\"+ rule.getOriginalExprDelimiters().getBeginToken(), "/1_TOKEN_ESCAPED/");
+    		txt = txt.replace("\\"+ rule.getOriginalExprDelimiters().getEndToken(), "/2_TOKEN_ESCAPED/");
+	    	if(txt.contains(rule.getOriginalExprDelimiters().getBeginToken())){
+	    		result = "";
+	    		String delimiterWithEscapes = Utils.addEscapeCharacters(rule.getOriginalExprDelimiters().getBeginToken());
+	    		String endDelimiterWithEscapes = Utils.addEscapeCharacters(rule.getOriginalExprDelimiters().getEndToken());
+		    	String[] splittedTxt = txt.split(delimiterWithEscapes);
+		    	if(rule.getOriginalExprDelimiters().areEquals()){ //con inicio y fin iguales
+			    	for (int i = 0; i < splittedTxt.length; i++) {	  
+			    		result += splittedTxt[i];
+			    		if(i < splittedTxt.length-1){
+				    		if ( (i & 1) == 0 ) {
+				    			if(i < splittedTxt.length-2){
+				    				result += rule.getReplacerExprDelimiters().getBeginToken();
+				    			}
+				    			else{
+				    				result += rule.getOriginalExprDelimiters().getBeginToken();
+				    			}
+				    		} else { 
+				    			result += rule.getReplacerExprDelimiters().getEndToken();
+				    		}
+			    		}    		
+					}
+		    	}
+		    	else{ //con inicio y fin distintos
+		    		if(splittedTxt.length > 0){
+						result += splittedTxt[0];
+					}
+		    		for (int i = 1; i < splittedTxt.length; i++) {
+		    			if(splittedTxt[i].contains(endDelimiterWithEscapes)){
+							String[] txt2 = splittedTxt[i].split(endDelimiterWithEscapes);
+							
+							result += rule.getReplacerExprDelimiters().getBeginToken() + txt2[0] + rule.getReplacerExprDelimiters().getEndToken();
+							for (int j = 1; j < txt2.length; j++) {
+								if(j < txt2.length -1){
+									result += txt2[j] + rule.getOriginalExprDelimiters().getEndToken();
+								}
+								else{
+									result += txt2[j];
+								}					
+							}							
+		    			}
+		    			else{
+		    				result += rule.getOriginalExprDelimiters().getBeginToken() + splittedTxt[i];
+		    			}
+					}
+		    	}
+		    	result = result.replace("/1_TOKEN_ESCAPED/", rule.getOriginalExprDelimiters().getBeginToken());
+		    	result = result.replace("/2_TOKEN_ESCAPED/", rule.getOriginalExprDelimiters().getEndToken());
+	    	}
+    	}
+	    else{
+	    	Pattern pattern = new Pattern(rule.getOriginalExpression());
+            Replacer replacer = pattern.replacer(rule.getReplacerExpression());
+            result = replacer.replace(txt);
+	    }
+    	return result;
+    }
+    
     
     private static String nestedRulesParser(String txtToTranslate){
     	if(currentStaticRule.getOriginalExprDelimiters().areEmpties()){ // listas sin marca inicial ni final
@@ -160,9 +227,10 @@ public class Interpreter {
               
               Pattern pattern = new Pattern(currentStaticRule.getOriginalExpression());
               Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
-              Replacer r2 = pattern.replacer(currentStaticRule.getReplacerExpression());
+              //Replacer r2 = pattern.replacer(currentStaticRule.getReplacerExpression());
               txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
-              txtToTranslate = r2.replace(txtToTranslate);
+              txtToTranslate = replaceExpr(txtToTranslate,currentStaticRule);
+              //txtToTranslate = r2.replace(txtToTranslate);
              
               return txtToTranslate;
     	}	
