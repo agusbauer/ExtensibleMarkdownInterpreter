@@ -6,7 +6,7 @@ TITLE2 -> ##TEXT -> <h2>TEXT</h2>
 TITLE1 -> #TEXT -> <h1>TEXT</h1>
 
 ITEM -> +TEXT -> <li>TEXT</li>
-LIST ->  BEGIN ITEM END ->  <ul>ITEM</ul>
+LIST ->   ITEM  ->  <ul>ITEM</ul>
 
 COL -> {TEXT} -> <td>TEXT</td>
 ROW -> -COL -> <tr>COL</tr>

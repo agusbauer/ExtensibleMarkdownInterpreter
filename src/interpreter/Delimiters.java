@@ -23,6 +23,10 @@ public class Delimiters {
 		return beginToken.equals(endToken);
 	}
 	
+	public boolean hasEndToken(){
+		return !endToken.isEmpty();
+	}
+	
 	public String getBeginToken() {
 		return beginToken;
 	}

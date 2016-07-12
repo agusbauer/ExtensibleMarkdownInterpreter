@@ -2,36 +2,33 @@
 <html>
 
 <head>
-<title>Page Title</title>
+<title>Ejemplo Interprete</title>
 </head>
 
 <body>
 /body/
+	#Interprete Extensible Markdown
 	
-	& ** *as* AAAAAA ** 
-	& **AAAAAA** 
+	##Ejemplos
 	
-	#titulo
+	& Hola, esto es un parrafo, ahora hay una *cursiva*, ahora una **negrita** y por ultimo una ** *curisvanegrita* **
+	& Ahora te pongo un \# escapado y un \* escapado.
 	
 	
-	BEGIN
-		+elemento *chau*
-		+elemento2
-		+elemento3
-	END
+	###Ejemplito Listas
 	
-	BEGIN
-		+elemento *chau*
-		+elemento2
-		+elemento3
-	END
+	
+	+elemento1 con *cursiva*
+	+elemento2 con **negrita**
+	+elemento3
+	
 
-	##Titulo2
+	###Ejemplo Tablas
 	
 	=
-		- {**col1**} {col2}
+		- {**col1**} {*col2*}
 		- {col3} {col4}{col5}{col6}
-		-{col7}
+		- {col7}
 	=
 	
 /body/
