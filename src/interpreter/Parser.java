@@ -66,7 +66,14 @@ public class Parser {
     	if(rule.getOriginalExprDelimiters().hasEndToken()){
     		String specialString2 = generateSpecialString(rule.getOriginalExprDelimiters().getEndToken());
     		txt = txt.replace("\\"+ rule.getOriginalExprDelimiters().getEndToken(), specialString2);
-    		result = applyRuleWithEndToken(txt, rule);
+    		if(!rule.getOriginalExprDelimiters().isComposed()){ 
+    			result = applyRuleWithEndToken(txt, rule);
+    		}
+    		else{ //si es una compuesta. ej: link o imagen 			
+    			Pattern pattern = new Pattern(rule.getOriginalExpression());
+    	        Replacer replacer = pattern.replacer(rule.getReplacerExpression());
+    	        result = replacer.replace(txt);
+    		}
     		result = result.replace(specialString1, rule.getOriginalExprDelimiters().getBeginToken());
         	result = result.replace(specialString2, rule.getOriginalExprDelimiters().getEndToken());
     	}
@@ -104,7 +111,7 @@ public class Parser {
 		for (int i = 0; i < splittedTxt.length; i++) {	  
     		result += splittedTxt[i];
     		if(i < splittedTxt.length-1){
-	    		if ( (i & 1) == 0 ) {
+	    		if ( (i & 1) == 0 ) { //si es par
 	    			if(i < splittedTxt.length-2){
 	    				result += rule.getReplacerExprDelimiters().getBeginToken();
 	    			}
@@ -124,13 +131,12 @@ public class Parser {
 		String delimiterWithEscapes = Utils.addEscapeCharacters(rule.getOriginalExprDelimiters().getBeginToken());
 		String endDelimiterWithEscapes = Utils.addEscapeCharacters(rule.getOriginalExprDelimiters().getEndToken());
     	String[] splittedTxt = txt.split(delimiterWithEscapes);
-		if(splittedTxt.length > 0){
+		if(splittedTxt.length > 0){			
 			result += splittedTxt[0];
 		}
 		for (int i = 1; i < splittedTxt.length; i++) {
-			if(splittedTxt[i].contains(endDelimiterWithEscapes)){
-				String[] txt2 = splittedTxt[i].split(endDelimiterWithEscapes);
-				
+			if(splittedTxt[i].contains(rule.getOriginalExprDelimiters().getEndToken())){				
+				String[] txt2 = splittedTxt[i].split(endDelimiterWithEscapes);			
 				result += rule.getReplacerExprDelimiters().getBeginToken() + txt2[0] + rule.getReplacerExprDelimiters().getEndToken();
 				for (int j = 1; j < txt2.length; j++) {
 					if(j < txt2.length -1){

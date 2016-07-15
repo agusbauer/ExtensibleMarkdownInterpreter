@@ -149,7 +149,7 @@ public class Interpreter {
     	Delimiters result = new Delimiters();
     	String[] splittedExpr = new String[0]; //si no anda poner null aca
     	if(commonExpression.contains(TEXT)){
-    		splittedExpr = commonExpression.replace(" ","").split(TEXT);
+    		splittedExpr = commonExpression.trim().split(TEXT);
     	}
     	else{
     		for (Rule rule : rules) { //lo hago de vuelta para poder obtener el incio y fin de la expresion
@@ -161,8 +161,15 @@ public class Interpreter {
     	}
     	if(splittedExpr.length >= 1){ 
     		result.setBeginToken(splittedExpr[0]);
-    		if(splittedExpr.length == 2){
-    			result.setEndToken(splittedExpr[1]);
+    		if(splittedExpr.length == 2){ 
+    			if(splittedExpr[1].contains("(")){
+    				String endTk = splittedExpr[1].replace("(LITERAL)","");
+    				result.setComposed(true); //hay que setearle que tiene algo adjunto como un link o img
+    				result.setEndToken(endTk);   				
+    			}
+    			else{
+    				result.setEndToken(splittedExpr[1]);
+    			}
     		}
     	}
     	return result;

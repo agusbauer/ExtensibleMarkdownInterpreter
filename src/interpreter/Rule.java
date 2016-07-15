@@ -45,9 +45,13 @@ public class Rule {
         String spCharWithoutCurrToken = Utils.removeTokens(Utils.SPECIAL_CHARACTERS, originalExprDelimiters.getBeginToken());      
         spCharWithoutCurrToken =  Utils.addEscapeCharacters(spCharWithoutCurrToken);
         String beginDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getBeginToken());       
-        if(!originalExprDelimiters.getEndToken().isEmpty()){       	
+        if(originalExprDelimiters.hasEndToken()){       	
         	String endDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getEndToken());
-            result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]+)" + endDelimiterEscaped ;
+        	
+            result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + endDelimiterEscaped ;
+            if(originalExprDelimiters.isComposed()){
+            	result += "\\(([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)\\)";
+            }
         }
         else{
             result += beginDelimiterEscaped + "([\\p{Graph}\\p{Blank}]*)";
@@ -60,8 +64,11 @@ public class Rule {
         String beginDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getBeginToken());
         String endDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getEndToken());
 		if(!replacerExprDelimiters.getEndToken().isEmpty()){
-			
-		    result += beginDelimiterEscaped + "$1" + endDelimiterEscaped;
+		    result = beginDelimiterEscaped + "$1" + endDelimiterEscaped;
+		    if(originalExprDelimiters.isComposed()){
+		    	String[] splittedBeginDel = beginDelimiterEscaped.split("LITERAL");	    	
+		    	result = splittedBeginDel[0] + "$2" + splittedBeginDel[1] + "$1" + endDelimiterEscaped;
+		    }
 		}
 		else{
 		    result += beginDelimiterEscaped + "$1";

@@ -2,11 +2,11 @@ package interpreter;
 
 public class Utils {
 	
-	public static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~";
+	public static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 	
 	public static String addEscapeCharacters(String expression){
         String result = expression;
-        String[] charactersToEscape = {"*","+","{","}"};
+        String[] charactersToEscape = {"*","+","{","}","(",")","[","]","$"};
         for (String character : charactersToEscape) {
             result = result.replace(character, "\\" + character);
         }

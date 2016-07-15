@@ -4,6 +4,7 @@ public class Delimiters {
 	
 	private String beginToken;
 	private String endToken;
+	private boolean composed = false; //dice si es compuesto, o sea si tiene algun dato mas, se usa para las img y los liks
 	
 	public Delimiters() {
 		this.beginToken = "";
@@ -27,6 +28,14 @@ public class Delimiters {
 		return !endToken.isEmpty();
 	}
 	
+	public boolean isComposed() {
+		return composed;
+	}
+
+	public void setComposed(boolean composed) {
+		this.composed = composed;
+	}
+
 	public String getBeginToken() {
 		return beginToken;
 	}
