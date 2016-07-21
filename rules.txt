@@ -7,6 +7,7 @@ TITLE3 -> ###TEXT -> <h3>TEXT</h3>
 TITLE2 -> ##TEXT -> <h2>TEXT</h2>
 TITLE1 -> #TEXT -> <h1>TEXT</h1>
 
+
 ITEM -> +TEXT -> <li>TEXT</li>
 LIST ->   ITEM  ->  <ul>ITEM</ul>
 
@@ -17,5 +18,6 @@ COL -> {TEXT} -> <td>TEXT</td>
 ROW -> -COL -> <tr>COL</tr>
 TABLE -> = ROW = -> <table>ROW</table>
 
-LINK -> ![TEXT](LITERAL) -> <img src="LITERAL" alt="TEXT"></img>
+LABEL -> @TEXT@ -> <a name="TEXT">
+IMG -> ![TEXT](LITERAL) -> <img src="LITERAL" alt="TEXT"></img>
 LINK -> [TEXT](LITERAL) -> <a href="LITERAL">TEXT</a>

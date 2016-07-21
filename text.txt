@@ -25,8 +25,8 @@
 <body>
 
 /body/
-
-	#Interprete Extensible Markdown
+	@TOP@
+	#Interprete Extensible Markdown IR HACIA [ABAJO](#BOT)
 	
 	##Ejemplos
 	
@@ -58,8 +58,18 @@
 	#### Ejemplo con links
 	& podes ir a [google](https://www.google.com.ar) o a [wikipedia](https://www.wikipedia.org/)
 	
+	
+	
+	
+	
+	
 	#### Y por ultimo, un gif, mira
-	![imagensita](https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif)
+	![imagensita]( https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif )
+	
+	
+	
+	
+	@BOT@
 	
 /body/
 
