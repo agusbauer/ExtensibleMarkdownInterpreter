@@ -47,7 +47,18 @@ public class Interpreter {
         } catch (IOException ex) {
             Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //rules = getRulesFrom(rulesText);
+        String[] splittedHeader = rulesText.split("/header/");
+        String header = "";
+        String footer = "";
+    	if(splittedHeader.length == 3){
+    		rulesText = splittedHeader[2];
+    		header = splittedHeader[1];
+    	}
+    	String[] splittedFooter = rulesText.split("/footer/");
+    	if(splittedFooter.length == 3){
+    		rulesText = splittedFooter[0];
+    		footer = splittedFooter[1];
+    	}
         getRulesFrom(rulesText);
       /*  for (Rule rule : rules) { // esto es para printear nomas
 			System.out.println(rule);
@@ -61,17 +72,15 @@ public class Interpreter {
 				}
 			}
 		}*/
-        String[] splittedText = textToTranslate.split("/body/");
-    	if(splittedText.length != 3){
-    		System.out.println("Error: Faltan delimitadores principales (/body/)");
-    	}
-        String translatedText = translate(splittedText[1]);
-        String result = splittedText[0] + translatedText + splittedText[2];
+        
+        String translatedText = translate(textToTranslate);
+        String result = header + translatedText + footer;
         System.out.println(result); // texto traducido
-        //generar archivo .html
         generateHtmlFile(result);
         
     }
+    
+    
     
     private static String fileToString(String fileName) throws FileNotFoundException, IOException {
         BufferedReader br = new BufferedReader(new FileReader(fileName));
