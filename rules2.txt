@@ -1,0 +1,38 @@
+/header/
+
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{Interprete Extensible de Markdown}
+\date{2013-09-01}
+\author{Agustin Bauer, Alan Gonzalez}
+\begin{document}
+\maketitle
+
+/header/
+
+BOLD -> **TEXT** -> \textbf{TEXT}
+ITAlIC -> *TEXT* -> \textit{TEXT}
+SECTION -> ###TEXT -> \\subsubsection{TEXT}
+SECTION -> ##TEXT -> \\subsection{TEXT}
+SECTION -> #TEXT -> \\section{TEXT}
+NEWPAGE -> %TEXT -> \\newpage TEXT
+
+
+ITEM -> +TEXT -> \\item TEXT 
+LIST ->   ITEM  ->  \\begin{itemize} ITEM \\end{itemize}
+
+COL -> {TEXT} -> TEXT &
+ROW -> -COL -> COL \\\
+TABLE -> = ROW = -> \begin{tabular}{ l  l  l } ROW \end{tabular}
+
+LABEL -> @TEXT@ -> <a name="TEXT">
+IMG -> ![TEXT](LITERAL) -> \\includegraphics{LITERAL TEXT}
+LINK -> [TEXT](LITERAL) -> \\href{LITERAL}{TEXT}
+
+/footer/
+
+\end{document}
+
+/footer/

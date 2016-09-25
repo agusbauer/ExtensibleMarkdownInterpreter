@@ -62,10 +62,10 @@ public class Parser {
     	}
     	String result = txt;	
     	String specialString1 = generateSpecialString(rule.getOriginalExprDelimiters().getBeginToken());
-		txt = txt.replace("\\"+ rule.getOriginalExprDelimiters().getBeginToken(), specialString1);	
+		txt = txt.replace("\\" + rule.getOriginalExprDelimiters().getBeginToken(), specialString1);	
     	if(rule.getOriginalExprDelimiters().hasEndToken()){
     		String specialString2 = generateSpecialString(rule.getOriginalExprDelimiters().getEndToken());
-    		txt = txt.replace("\\"+ rule.getOriginalExprDelimiters().getEndToken(), specialString2);
+    		txt = txt.replace("\\" + rule.getOriginalExprDelimiters().getEndToken(), specialString2);
     		if(!rule.getOriginalExprDelimiters().isComposed()){ 
     			result = applyRuleWithEndToken(txt, rule);
     		}

@@ -42,8 +42,8 @@ public class Interpreter {
     	String textToTranslate = "";
     	String rulesText = "";
         try {
-        	textToTranslate = fileToString("text.txt");
-        	rulesText = fileToString("rules.txt");    
+        	textToTranslate = fileToString("text2.txt");
+        	rulesText = fileToString("rules2.txt");    
         } catch (IOException ex) {
             Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
