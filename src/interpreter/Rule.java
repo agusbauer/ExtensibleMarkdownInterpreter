@@ -59,7 +59,7 @@ public class Rule {
         return result;
     }   
     
-    private String generateReplacerExpression(){
+    private String generateReplacerExpression(){ //TODO: agregar if para cuando solo tenga endToken
         String result = "";
         String beginDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getBeginToken());
         String endDelimiterEscaped = Utils.addEscapeCharacters(replacerExprDelimiters.getEndToken());

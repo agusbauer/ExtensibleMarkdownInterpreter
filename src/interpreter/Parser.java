@@ -42,7 +42,7 @@ public class Parser {
 	    				if (replacedMatch != "")
 	    					replacedMatch = r2.replace(replacedMatch);
 	    				else
-	    					replacedMatch = r2.replace(match.toString());
+	    					replacedMatch  = r2.replace(match.toString());
 	    				tb.append(replacedMatch); 
 	    			}
 	             };
@@ -57,6 +57,7 @@ public class Parser {
 	}
 	
 	public static String applyRuleInText(String txt, Rule rule){
+		
     	if(rule == null){
     		return txt;
     	}
@@ -69,10 +70,16 @@ public class Parser {
     		if(!rule.getOriginalExprDelimiters().isComposed()){ 
     			result = applyRuleWithEndToken(txt, rule);
     		}
-    		else{ //si es una compuesta. ej: link o imagen 			
-    			Pattern pattern = new Pattern(rule.getOriginalExpression());
-    	        Replacer replacer = pattern.replacer(rule.getReplacerExpression());
-    	        result = replacer.replace(txt);
+    		else{ //si es una compuesta. ej: link o imagen 		TODO: Aca esta el drama de que no anden los compuestos
+    			
+    	        String[] splittedText = txt.split("\n");	  //divide el texto por cada linea y reemplaza cada linea por separado
+    	        result = ""; 									//para que no haya dramas. PD: se puede poner un link o imagen por linea
+    	        for (int i = 0; i < splittedText.length; i++) {   //si hay mas puede fallar     	
+    	        	Pattern pattern = new Pattern(rule.getOriginalExpression());
+        	        Replacer replacer = pattern.replacer(rule.getReplacerExpression());
+    	        	result += replacer.replace(splittedText[i]) + "\n";
+				}
+    	        
     		}
     		result = result.replace(specialString1, rule.getOriginalExprDelimiters().getBeginToken());
         	result = result.replace(specialString2, rule.getOriginalExprDelimiters().getEndToken());
@@ -105,6 +112,7 @@ public class Parser {
 	}
 	
 	private static String applyRuleWithEqualsTokens(String txt, Rule rule){
+		
 		String result = "";
 		String delimiterWithEscapes = Utils.addEscapeCharacters(rule.getOriginalExprDelimiters().getBeginToken());
     	String[] splittedTxt = txt.split(delimiterWithEscapes);

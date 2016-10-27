@@ -42,8 +42,8 @@ public class Interpreter {
     	String textToTranslate = "";
     	String rulesText = "";
         try {
-        	textToTranslate = fileToString("text2.txt");
-        	rulesText = fileToString("rules2.txt");    
+        	textToTranslate = fileToString("text.txt");
+        	rulesText = fileToString("rules.txt");    
         } catch (IOException ex) {
             Logger.getLogger(Interpreter.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -60,7 +60,7 @@ public class Interpreter {
     		footer = splittedFooter[1];
     	}
         getRulesFrom(rulesText);
-      /*  for (Rule rule : rules) { // esto es para printear nomas
+       /* for (Rule rule : rules) { // esto es para printear nomas
 			System.out.println(rule);
 			if(!rule.getSubrules().isEmpty()){
 				System.out.println("subregla de "+rule.getName());
@@ -145,9 +145,9 @@ public class Interpreter {
     private static Rule obtainSubrule(String expression){
     	Rule result = null;
     	int i = 0;
-    	for (i = 0; i < rules.size() && !expression.contains(rules.get(i).getName()); i++) {
-		}
-    	if(i < rules.size()){ 		
+    	for (i = 0; i < rules.size() && !expression.contains(rules.get(i).getName()); i++) { //busca en todas las reglas de antes para ver si la expresion tiene el nombre de alguna
+		}																						//por eso las subreglas siempre deben definirse antes que la regla padre
+    	if(i < rules.size()){ 	
     		result = rules.get(i);
     		rules.remove(i);
     	}
@@ -162,7 +162,7 @@ public class Interpreter {
     	}
     	else{
     		for (Rule rule : rules) { //lo hago de vuelta para poder obtener el incio y fin de la expresion
-    			if(commonExpression.contains(rule.getName())){   				
+    			if(commonExpression.contains(rule.getName())){   	//si no contiene TEXT, tiene que contener el nombre de la regla padre			
     				splittedExpr = commonExpression.replace(" ","").split(rule.getName());
     				break;
     			}
@@ -170,14 +170,17 @@ public class Interpreter {
     	}
     	if(splittedExpr.length >= 1){ 
     		result.setBeginToken(splittedExpr[0]);
+    		//System.out.println("begintk: "+ splittedExpr[0]);
     		if(splittedExpr.length == 2){ 
     			if(splittedExpr[1].contains("(")){
     				String endTk = splittedExpr[1].replace("(LITERAL)","");
+    				//System.out.println("endtk: "+ endTk);
     				result.setComposed(true); //hay que setearle que tiene algo adjunto como un link o img
-    				result.setEndToken(endTk);   				
+    				result.setEndToken(endTk);
     			}
     			else{
     				result.setEndToken(splittedExpr[1]);
+    				//System.out.println("endtk: "+ splittedExpr[1]);
     			}
     		}
     	}
