@@ -6,7 +6,7 @@ import jregex.Replacer;
 import jregex.Substitution;
 import jregex.TextBuffer;
 
-public class Parser {
+public class Parser2 {
 	
 	 public static String nestedRulesParser(String txtToTranslate){
 	    	if(Interpreter.currentStaticRule.getOriginalExprDelimiters().areEmpties()){ // listas sin marca inicial ni final
@@ -50,7 +50,7 @@ public class Parser {
 	              Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
 	              //Replacer r2 = pattern.replacer(Interpreter.currentStaticRule.getReplacerExpression());
 	              txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
-	              txtToTranslate = Parser.applyRuleInText(txtToTranslate,Interpreter.currentStaticRule);
+	              txtToTranslate = Parser2.applyRuleInText(txtToTranslate,Interpreter.currentStaticRule);
 	              //txtToTranslate = r2.replace(txtToTranslate);
 	              return txtToTranslate;
 	    	}	

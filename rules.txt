@@ -1,60 +1,28 @@
-/header/
+begin{
 
-<!DOCTYPE html>
-<html>
-
-<head>
-	<title>Ejemplo Interprete</title>
-	<style>
-	table {
-	    font-family: arial, sans-serif;
-	    border-collapse: collapse;
-	    width: 50%;
+	ITAlIC -> * text * -> <em> text </em>
+	BOLD -> ** text ** -> <strong> text </strong>
+	UNDERLINE -> % text % -> <u> text </u>
+	PARAGRAPH -> & text -> <p> text </p>
+	TITLE1 -> # text -> <h1> text </h1>
+	TITLE2 -> ## text -> <h2> text </h2>
+	TITLE3 -> ### text -> <h3> text </h3>
+	TITLE4 -> #### text -> <h4> text </h4>
+	
+	nested{
+		LIST ->   text  ->  <ul> text </ul>
+		ITEM -> + text -> <li> text </li>
 	}
 	
-	td, th {
-	    border: 1px solid #dddddd;
-	    text-align: left;
-	    padding: 8px;
+	nested{
+		ORDERLIST -> text  ->  <ol> text </ol>
+		ELEMENTO -> $ text -> <li> text </li>
+		
 	}
 	
-	tr:nth-child(even) {
-	    background-color: #dddddd;
-	}
-	</style>
-</head>
-
-<body>
-/header/
-
-BOLD -> **TEXT** -> <strong>TEXT</strong>
-ITAlIC -> *TEXT* -> <em>TEXT</em>
-UNDERLINE -> %TEXT% -> <u>TEXT</u>
-PARAGRAPH -> &TEXT -> <p>TEXT</p>
-TITLE4 -> ####TEXT -> <h4>TEXT</h4>
-TITLE3 -> ###TEXT -> <h3>TEXT</h3>
-TITLE2 -> ##TEXT -> <h2>TEXT</h2>
-TITLE1 -> #TEXT -> <h1>TEXT</h1>
-
-
-ITEM -> +TEXT -> <li>TEXT</li>
-LIST ->   ITEM  ->  <ul>ITEM</ul>
-
-ELEMENTO -> $TEXT -> <li>TEXT</li>
-ORDERLIST -> ELEMENTO  ->  <ol>ELEMENTO</ol>
-
-COL -> {TEXT} -> <td>TEXT</td>
-ROW -> -COL -> <tr>COL</tr>
-TABLE -> = ROW = -> <table>ROW</table>
-
-LABEL -> @TEXT@ -> <a name="TEXT">
-IMG -> ![TEXT](LITERAL) -> <img src="LITERAL" alt="TEXT"></img>
-LINK -> [TEXT](LITERAL) -> <a href="LITERAL">TEXT</a>
-
-/footer/
-
-	</body>
-
-</html>
-
-/footer/
+	LABEL -> @ text @ -> <a_name=" text ">
+	
+	IMG -> ![ text ] ( literal ) -> <img_src=" literal "_alt=" text "></img>
+	LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a>
+	
+}

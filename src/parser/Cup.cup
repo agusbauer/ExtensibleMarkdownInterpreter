@@ -1,0 +1,166 @@
+package parser;
+
+import java_cup.runtime.*;
+import java.io.FileReader;
+import java.util.ArrayList;
+import interpreter.Rule;
+import interpreter.Delimiters;
+
+/* Codigo del parser, se copia integramente a la clase final.
+    Agregamos el manejo de errores. */
+parser code {:
+    
+    /* Reporte de error encontrado. */
+    public void report_error(String message, Object info) {
+        StringBuilder m = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {                
+                m.append(" in line "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", column "+(s.right+1));
+            }
+        }
+        m.append(" : "+message);
+        System.err.println(m);
+    }
+   
+    /* Cuando se encuentra un error de donde el sistema no puede
+        recuperarse, se lanza un error fatal. Se despliega el mensaje
+        de error y se finaliza la ejecucion. */
+    public void report_fatal_error(String message, Object info) {
+        report_error(message, info);
+        System.exit(1);
+    }
+    
+    ArrayList<Rule> rules = new ArrayList<Rule>();
+     
+    public ArrayList<Rule> getRules(){
+		return rules;
+	}
+    
+:};
+
+/* Terminals (tokens returned by the scanner).*/
+
+terminal        SEPARATOR, LKEY, RKEY, LPAREN, RPAREN, SEMICOLON;
+
+/*PALABRAS RESERVADAS*/
+terminal		TEXT, BEGIN, NESTED, COMPOSED, LITERAL;
+
+/*IDENTIFICADORES*/
+terminal	String IDENTIFIER;
+
+/* Non terminals used in the grammar section.*/
+non terminal      decl, program, rule, leftPart, rightPart, nestedRule, composedDelimiters;
+
+
+precedence left IDENTIFIER;
+
+/* ----------------------------Grammar Section-------------------- */
+
+program ::= BEGIN LKEY decl RKEY
+			{:
+					System.out.println("movida 1");           
+        	:} 
+			| BEGIN LKEY RKEY
+			{:
+					System.out.println("movida 3");  
+        	:} 
+        	;
+			
+decl ::= nestedRule
+		| rule:r
+		{:
+			parser.rules.add((Rule)r);		           
+       	:}
+		| rule:r decl
+		{:
+		    parser.rules.add((Rule)r);		
+        :}
+		| nestedRule decl
+		;			
+
+nestedRule ::= NESTED LKEY rule:a rule:b RKEY
+				{:
+					parser.rules.add((Rule)a);	
+					((Rule) a).addSubrule((Rule)b);        
+        		:}
+        	  | NESTED LKEY rule:a rule:b rule:c RKEY
+				{:
+					parser.rules.add((Rule)a);	
+					((Rule) a).addSubrule((Rule)b);
+					((Rule) b).addSubrule((Rule)c);          
+        		:}  
+			  | BEGIN LKEY RKEY
+			  ; 
+
+rule ::= IDENTIFIER:a SEPARATOR leftPart:b SEPARATOR rightPart:c
+		{:					
+			
+			RESULT = new Rule(a,(Delimiters)b,(Delimiters)c,0,null);  
+			               
+        :}
+		|IDENTIFIER:a SEPARATOR composedDelimiters:b SEPARATOR rightPart:c
+		{:					
+			
+			RESULT = new Rule(a,(Delimiters)b,(Delimiters)c,0,null);  
+			               
+        :}
+        ;
+
+composedDelimiters ::= IDENTIFIER:a TEXT IDENTIFIER:b LPAREN LITERAL RPAREN
+					{:
+						
+						Delimiters d = new Delimiters(a,b); 
+						d.setComposed(true);
+		                RESULT = d; 
+        			:}
+        			|IDENTIFIER:a TEXT LPAREN LITERAL RPAREN
+		        	{:
+						
+						Delimiters d = new Delimiters(a,""); 
+						d.setComposed(true);
+		                RESULT = d;
+		        	:}
+        			;
+
+leftPart ::= IDENTIFIER:a TEXT IDENTIFIER:b
+			{:
+				
+                RESULT = new Delimiters(a,b); 
+        	:}
+        	|IDENTIFIER:a TEXT 
+        	{:
+			
+                RESULT = new Delimiters(a,""); 
+        	:} 
+        	|TEXT 
+        	{:
+			
+                RESULT = new Delimiters("",""); 
+        	:}
+			;
+			
+rightPart ::= IDENTIFIER:a TEXT IDENTIFIER:b
+			{:
+				
+                RESULT = new Delimiters(a.replace("_"," "),b.replace("_"," ")); 
+        	:}
+        	| IDENTIFIER:x LITERAL IDENTIFIER:a TEXT IDENTIFIER:b
+			{:
+				
+                RESULT = new Delimiters(x.replace("_"," ") + "LITERAL" + a.replace("_"," "),b.replace("_"," ")); 
+        	:}   
+			|IDENTIFIER:a TEXT
+        	{:
+                RESULT = new Delimiters(a.replace("_"," "),""); 
+        	:}
+        	|TEXT 
+        	{:
+                RESULT = new Delimiters("",""); 
+        	:} 
+			;
+        
+
+

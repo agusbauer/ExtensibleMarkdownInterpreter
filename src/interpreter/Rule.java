@@ -132,8 +132,8 @@ public class Rule {
 		return subrules;
 	}
 
-	public void setSubrules(ArrayList<Rule> subrules) {
-		this.subrules = subrules;
+	public void addSubrule(Rule subrule) {
+		this.subrules.add(subrule);
 	}
 	/************************** End Getters and Setters Section **************************/
 	
