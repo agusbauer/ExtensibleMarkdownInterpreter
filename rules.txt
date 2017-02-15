@@ -1,3 +1,14 @@
+
+/header/ \documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{Interprete Extensible de Markdown}
+\date{2013-09-01}
+\author{Agustin Bauer, Alan Gonzalez}
+\begin{document}
+\maketitle  /header/
+
 begin{
 
 	ITAlIC -> * text * -> <em> text </em>
@@ -26,3 +37,4 @@ begin{
 	LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a>
 	
 }
+

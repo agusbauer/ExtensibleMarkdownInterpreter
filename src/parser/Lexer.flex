@@ -34,6 +34,9 @@ Id = [A-Za-z_|"\""|"="|"-"|"<"|">"|"!"|"@"|"#"|"$"|"%"|"&"|"\*"|"\+"|"\["|"\]"|"
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
 InputCharacter = [^\r\n]
+Comment = "/*" [^*] ~"*/" | "/*" "*"+ "/"
+Header = "/header/" [^*] ~"/header/"
+Footer = "/footer/" [^*] ~"/footer/"
 
 
 %{
@@ -45,6 +48,8 @@ public String lexeme;
 <YYINITIAL> {
 
 	{WhiteSpace}	{/*skip*/}
+	{Header}      {/*skip*/}
+	{Footer}      {/*skip*/}
 	
 	//separadoress
 	"("				{return symbol(sym.LPAREN);}

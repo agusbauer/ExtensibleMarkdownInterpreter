@@ -61,11 +61,11 @@ precedence left IDENTIFIER;
 
 program ::= BEGIN LKEY decl RKEY
 			{:
-					System.out.println("movida 1");           
+		        
         	:} 
 			| BEGIN LKEY RKEY
 			{:
-					System.out.println("movida 3");  
+				
         	:} 
         	;
 			

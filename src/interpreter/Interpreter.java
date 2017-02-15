@@ -67,7 +67,8 @@ public class Interpreter {
 				}
 			}
         }*/
-
+        
+        
         
         String translatedText = translate(textToTranslate);
         System.out.println(translatedText); // texto traducido
