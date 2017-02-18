@@ -38,9 +38,12 @@ public class Interpreter {
     public static void main(String[] args) {
         BufferedReader br = null;
         String textToTranslate = "";
+        String rulesText = "";
 		try {
 			textToTranslate = fileToString("text.txt");
+			rulesText =  fileToString("rules.txt");
 			br = new BufferedReader(new FileReader("rules.txt"));
+
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e) {
@@ -68,11 +71,24 @@ public class Interpreter {
 			}
         }*/
         
+        String[] splittedHeader = rulesText.split("/header/");
+        String header = "";
+        String footer = "";
+    	if(splittedHeader.length == 3){
+    		rulesText = splittedHeader[2];
+    		header = splittedHeader[1];
+    	}
+    	String[] splittedFooter = rulesText.split("/footer/");
+    	if(splittedFooter.length == 3){
+    		rulesText = splittedFooter[0];
+    		footer = splittedFooter[1];
+    	}
         
-        
-        String translatedText = translate(textToTranslate);
-        System.out.println(translatedText); // texto traducido
-        generateHtmlFile(translatedText);
+    	String translatedText = translate(textToTranslate);
+        String result = header + translatedText + footer;
+        System.out.println(result); // texto traducido
+    	
+        generateHtmlFile(result);
         
     }
     

@@ -1,13 +1,14 @@
 
-/header/ \documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\title{Interprete Extensible de Markdown}
-\date{2013-09-01}
-\author{Agustin Bauer, Alan Gonzalez}
-\begin{document}
-\maketitle  /header/
+/header/  
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
+
+/header/
 
 begin{
 
@@ -37,4 +38,9 @@ begin{
 	LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a>
 	
 }
+
+/footer/
+</body>
+</html>
+/footer/
 
