@@ -12,16 +12,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.SplittableRandom;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import jregex.MatchResult;
-
-import jregex.Pattern;
-import jregex.Replacer;
-import jregex.Substitution;
-import jregex.TextBuffer;
 import parser.Lexer;
 import parser.Parser;
 
@@ -35,14 +25,14 @@ public class Interpreter {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static String execute(String rulesFileName, String textFileName) {
         BufferedReader br = null;
         String textToTranslate = "";
         String rulesText = "";
 		try {
-			textToTranslate = fileToString("text.txt");
-			rulesText =  fileToString("rules.txt");
-			br = new BufferedReader(new FileReader("rules.txt"));
+			textToTranslate = fileToString(textFileName);
+			rulesText =  fileToString(rulesFileName);
+			br = new BufferedReader(new FileReader(rulesFileName));
 
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -50,12 +40,14 @@ public class Interpreter {
 			e.printStackTrace();
 		}
         Lexer lex = new Lexer(br);
+       
         Parser parser = new Parser(lex);
         try {
 			parser.parse();
 		} catch (Exception e) {
-			e.printStackTrace();
+			return e.getMessage();
 		}
+        
         rules = parser.getRules();
         
         /*for(Rule rule : rules){
@@ -86,9 +78,10 @@ public class Interpreter {
         
     	String translatedText = translate(textToTranslate);
         String result = header + translatedText + footer;
-        System.out.println(result); // texto traducido
-    	
+    
         generateHtmlFile(result);
+        
+        return result; 
         
     }
     

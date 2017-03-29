@@ -149,15 +149,27 @@ public class Parser extends java_cup.runtime.lr_parser {
             }
         }
         m.append(" : "+message);
-        System.err.println(m);
+       // System.err.println(m);
+        
     }
    
     /* Cuando se encuentra un error de donde el sistema no puede
         recuperarse, se lanza un error fatal. Se despliega el mensaje
         de error y se finaliza la ejecucion. */
-    public void report_fatal_error(String message, Object info) {
-        report_error(message, info);
-        System.exit(1);
+    public void report_fatal_error(String message, Object info) throws Exception {
+        StringBuilder m = new StringBuilder("Error");
+        if (info instanceof java_cup.runtime.Symbol) {
+            java_cup.runtime.Symbol s = ((java_cup.runtime.Symbol) info);
+            if (s.left >= 0) {                
+                m.append(" in line "+(s.left+1));
+                if (s.right >= 0)
+                    m.append(", column "+(s.right+1));
+            }
+        }
+        m.append(" : "+message);
+       // System.err.println(m);
+        throw new Exception(m.toString());
+        
     }
     
     ArrayList<Rule> rules = new ArrayList<Rule>();

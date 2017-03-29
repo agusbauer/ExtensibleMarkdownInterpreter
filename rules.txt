@@ -12,7 +12,7 @@
 
 begin{
 
-	ITAlIC -> * text * -> <em> text </em>
+	ITAlIC -> * text *  -> <em> text </em>
 	BOLD -> ** text ** -> <strong> text </strong>
 	UNDERLINE -> % text % -> <u> text </u>
 	PARAGRAPH -> & text -> <p> text </p>
