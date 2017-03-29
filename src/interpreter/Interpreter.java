@@ -20,36 +20,23 @@ public class Interpreter {
     public static final int RULE_NAME = 0;
     
     public static ArrayList<Rule> rules = new ArrayList<Rule>();
+    public static String rulesText = "";
     public static Rule currentStaticRule = null;
     
     /**
      * @param args the command line arguments
      */
-    public static String execute(String rulesFileName, String textFileName) {
-        BufferedReader br = null;
+    public static String execute(String textFileName) {
+ 
         String textToTranslate = "";
-        String rulesText = "";
 		try {
 			textToTranslate = fileToString(textFileName);
-			rulesText =  fileToString(rulesFileName);
-			br = new BufferedReader(new FileReader(rulesFileName));
-
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        Lexer lex = new Lexer(br);
-       
-        Parser parser = new Parser(lex);
-        try {
-			parser.parse();
-		} catch (Exception e) {
-			return e.getMessage();
-		}
-        
-        rules = parser.getRules();
-        
+		
         /*for(Rule rule : rules){
         	System.out.println(rule);
         	if(!rule.getSubrules().isEmpty()){
@@ -83,6 +70,33 @@ public class Interpreter {
         
         return result; 
         
+    }
+    
+    public static String compileRules(String rulesFileName){
+    	BufferedReader br = null;
+    	rulesText = "";
+    	try {
+			rulesText =  fileToString(rulesFileName);
+			br = new BufferedReader(new FileReader(rulesFileName));
+
+		} catch (FileNotFoundException e1) {
+			e1.printStackTrace();
+			return "file not found";
+		} catch (IOException e) {
+			e.printStackTrace();
+			return "IOException";
+		}
+        Lexer lex = new Lexer(br);
+       
+        Parser parser = new Parser(lex);
+        try {
+			parser.parse();
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+        rules = parser.getRules();
+		return "";
+    	
     }
     
     private static String fileToString(String fileName) throws FileNotFoundException, IOException {
