@@ -1,5 +1,7 @@
 package interpreter;
 
+import ui.UIApp;
+
 public class MainInterpreter {
 
 	public static void main(String[] args) {
@@ -18,6 +20,8 @@ public class MainInterpreter {
 		
 		if(args.length == 0){
 			System.out.println("Ejecutar el frontend");
+			UIApp ui = new UIApp();
+			ui.main(args);
 		}
 
 	}

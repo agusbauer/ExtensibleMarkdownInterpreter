@@ -1,44 +1,55 @@
-  
 
-<!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
+<h1>last_card_request en error o new  - 56 - 60 - 77 - 89 - 99 - 14</h1>
+SELECT  applicant.id as applicant_id, applicant.user_id, applicant.creation_date, applicant.first_name,  applicant.last_name, applicant.gender, applicant.document_number, applicant.secondary_identification_number, card_request.creation_date as card_request_creation_date, card_request.status as card_request_status, card_request.status_detail as card_request_status_detail, card_request.request, card_request.raw_provider_response, card_request.id ,applicant.status as applicant_status, applicant.mode, applicant.remaining_scores
+FROM applicant
+INNER JOIN card_request
+ON applicant.last_card_request_id = card_request.id where (card_request.status='error' or card_request.status='new') and applicant.mode='prod' and applicant.user_id > 180;
 
 
+<h1>SCORES EN ERROR - 381 por timeout - 167 invalid data</h1>
+SELECT  applicant.id as applicant_id, applicant.user_id, applicant.creation_date, applicant.first_name,  applicant.last_name, applicant.gender, applicant.document_number, score.status as score_status, score.status_detail as score_status_detail, score.request, score.raw_provider_response, applicant.status as applicant_status, applicant.mode, applicant.remaining_scores
+FROM applicant
+INNER JOIN score
+ON applicant.last_score_id = score.id where score.status='error' and score.status_detail = 'unexpected_error' and applicant.mode='prod' and applicant.user_id > 180;
 
-	<a name="TOP">
-	<h1>Interprete Extensible Markdown IR HACIA <a href="#BOT">ABAJO</a></h1>
-	
-	<h2>Ejemplos</h2>
-	
-	<p> Hola, esto es un parrafo, ahora hay una <em>cursiva</em>, ahora una <strong>negrita</strong> y por ultimo una <strong> <em>curisvanegrita</em> </strong></p>
-	<p> Ahora te pongo un # escapado y un * escapado.</p>
-	
-	
-	<h3>Ejemplos Listas</h3>
-	
-	<h4>Lista no ordenada</h4>
-	<ul><li>elemento1 con <em>cursiva</em></li>
-	<li>elemento2 con <strong>negrita</strong></li>
-	<li>elemento3</li></ul>
-	
-	<h4>Lista ordenada</h4>
-	<ol><li> <u>item1 subrayado</u></li>
-	<li>item2</li>
-	<li>item3</li></ol>
 
-	<h4> Ejemplo con links</h4>
-	<p> podes ir a <a href="https://www.google.com.ar">google</a> o a <a href="https://www.wikipedia.org/">wikipedia</a></p>
-	
-	
-	<h4> Y por ultimo, un gif, mira</h4>
-	!<a href=" https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif ">imagensita</a>
+<h1>TODOS LOS SCORES</h1>
+SELECT  applicant.id as applicant_id, applicant.user_id, score.creation_date as score_creation_date, applicant.first_name,  applicant.last_name, applicant.gender, applicant.document_number, score.status as score_status, score.status_detail as score_status_detail, score.request, score.raw_provider_response, applicant.status as applicant_status, applicant.mode, applicant.remaining_scores
+FROM applicant
+INNER JOIN score
+ON applicant.last_score_id = score.id where applicant.mode='prod' and applicant.user_id > 180 and score.creation_date > '2017-02-01';
 
-	<a name="BOT">
+select * from score where creation_date > '2017-02-01'; <h1>4426</h1>
 
-</body>
-</html>
+
+<h1>last_card_request en error o new  - 56 - 60 - 77 - 89 - 99</h1>
+SELECT  applicant.id as applicant_id, applicant.user_id, applicant.creation_date, applicant.first_name,  applicant.last_name, applicant.gender, applicant.document_number, applicant.secondary_identification_number, card_request.creation_date as card_request_creation_date, card_request.status as card_request_status, card_request.status_detail as card_request_status_detail, card_request.request, card_request.raw_provider_response, card_request.id ,applicant.status as applicant_status, applicant.mode, applicant.remaining_scores
+FROM applicant
+INNER JOIN card_request
+ON applicant.last_card_request_id = card_request.id where card_request.status='error' and applicant.mode='prod' and applicant.user_id > 180;
+
+
+
+
+
+<h1>SCORES EN ERROR - 381 por timeout - 167 invalid data</h1>
+SELECT  applicant.id as applicant_id, applicant.user_id, applicant.creation_date, applicant.first_name,  applicant.last_name, applicant.gender, applicant.document_number, score.status as score_status, score.status_detail as score_status_detail, score.request, score.raw_provider_response, applicant.status as applicant_status, applicant.mode, applicant.remaining_scores
+FROM applicant
+INNER JOIN score
+ON applicant.last_score_id = score.id where score.status='error' and score.status_detail= 'unexpected_error' and applicant.mode='prod' and applicant.user_id > 180;
+
+<h1>LAST SCORES CON ERROR PARA SEGUIMIENTO</h1>
+SELECT  score.creation_date as score_creation_date, applicant.document_number,  score.raw_provider_response,score.status as score_status, score.status_detail
+FROM applicant
+INNER JOIN score
+ON applicant.last_score_id = score.id where applicant.mode='prod' and applicant.user_id > 180 and (score.status = 'error') and score.creation_date between '2017-02-02' and '2017-02-03' order by score_creation_date asc;
+
+
+<h1>TODOS LOS SCORES PARA SEGUIMIENTO</h1>
+SELECT  score.creation_date as score_creation_date, applicant.document_number,  score.raw_provider_response,score.status as score_status
+FROM applicant
+INNER JOIN score
+ON applicant.id = score.applicant_id where applicant.mode='prod' and applicant.user_id > 180 and score.creation_date between '2017-02-06' and '2017-02-07' order by score_creation_date asc;
+
+
 
