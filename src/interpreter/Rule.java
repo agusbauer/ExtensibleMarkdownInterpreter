@@ -141,7 +141,7 @@ public class Rule {
 	@Override
     public String toString() {
 		
-        return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + '}';
+        return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + ", delimiters=" + replacerExprDelimiters +'}';
     }
 
     

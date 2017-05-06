@@ -13,7 +13,7 @@ import static jflex.Main.generate;
 
 public class Main {
 
-	/*public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 		
 		//File file=new File("src/tesis/Lexer.flex");
        // generate(file);
@@ -54,6 +54,6 @@ public class Main {
             System.out.println("\n*** Codigo no existente ***\n");
         }
         return efectuado;
-    }*/
+    }
 
 }

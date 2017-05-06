@@ -18,9 +18,17 @@ public class Parser2 {
 	    		Pattern pattern = new Pattern(Interpreter.currentStaticRule.getSubrules().get(0).getOriginalExpression());
 	    		Replacer rep = pattern.replacer(patternStr);
 	    		txtToTranslate =  rep.replace(txtToTranslate);
+	   
+	    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);//reemplaza por vacio los delimitadores iniciales y finales repetidos
+	    		rep = pattern.replacer("$1"); 
+	    		txtToTranslate =  rep.replace(txtToTranslate);
 	    		
-	    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);
-	    		rep = pattern.replacer("$1");   		
+	    		pattern = new Pattern(replExprSPlitted[0]);
+	    		rep = pattern.replacer(replExprSPlitted[0] + "\n                "); 
+	    		txtToTranslate =  rep.replace(txtToTranslate);
+	    		
+	    		pattern = new Pattern(replExprSPlitted[1]);
+	    		rep = pattern.replacer("\n                " + replExprSPlitted[1]); 
 	    		txtToTranslate =  rep.replace(txtToTranslate);
 	    		
 	    		return txtToTranslate;

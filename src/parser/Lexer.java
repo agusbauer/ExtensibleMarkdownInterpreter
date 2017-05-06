@@ -38,10 +38,10 @@ public class Lexer implements java_cup.runtime.Scanner {
   private static final String ZZ_CMAP_PACKED = 
     "\11\0\1\5\1\4\1\0\1\5\1\3\22\0\1\5\6\1\1\0"+
     "\1\20\1\21\1\7\1\1\1\0\1\24\1\0\1\6\12\2\1\0"+
-    "\1\26\2\1\1\25\1\0\34\1\1\0\1\1\1\0\1\1\1\0"+
-    "\1\12\1\30\1\35\1\13\1\11\1\15\1\31\1\10\1\32\2\1"+
-    "\1\40\1\36\1\33\1\16\1\37\1\1\1\14\1\34\1\17\3\1"+
-    "\1\27\2\1\1\22\1\1\1\23\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
+    "\1\26\2\1\1\25\1\0\36\1\1\0\1\1\1\0\1\12\1\30"+
+    "\1\35\1\13\1\11\1\15\1\31\1\10\1\32\2\1\1\40\1\36"+
+    "\1\33\1\16\1\37\1\1\1\14\1\34\1\17\3\1\1\27\2\1"+
+    "\1\22\1\1\1\23\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uffff\0\uff92\0";
 
   /** 
    * Translates characters to character classes
@@ -391,7 +391,7 @@ public String lexeme;
     char [] map = new char[0x110000];
     int i = 0;  /* index in packed string  */
     int j = 0;  /* index in unpacked array */
-    while (i < 144) {
+    while (i < 140) {
       int  count = packed.charAt(i++);
       char value = packed.charAt(i++);
       do map[j++] = value; while (--count > 0);

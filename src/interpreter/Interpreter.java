@@ -6,10 +6,13 @@ package interpreter;
  */
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import parser.Lexer;
@@ -37,19 +40,7 @@ public class Interpreter {
 			e.printStackTrace();
 		}
 		
-        /*for(Rule rule : rules){
-        	System.out.println(rule);
-        	if(!rule.getSubrules().isEmpty()){
-				System.out.println("subregla de "+rule.getName());
-				System.out.println(rule.getSubrules());
-				if(!rule.getSubrules().get(0).getSubrules().isEmpty()){
-					System.out.println("subregla de "+rule.getSubrules().get(0).getName());
-					System.out.println(rule.getSubrules().get(0).getSubrules().get(0));
-					
-				}
-			}
-        }*/
-        
+
         String[] splittedHeader = rulesText.split("/header/");
         String header = "";
         String footer = "";
@@ -75,9 +66,22 @@ public class Interpreter {
     public static String compileRules(String rulesFileName){
     	BufferedReader br = null;
     	rulesText = "";
-    	try {
-			rulesText =  fileToString(rulesFileName);
+    	try {  		
+			//rulesText =  fileToString(rulesFileName);
 			br = new BufferedReader(new FileReader(rulesFileName));
+			String line;
+			
+			while ((line = br.readLine()) != null) {
+				if(line.contains("->")){
+					 line = Utils.reeplaceSpecialCharactersInRules(line);	
+				}
+
+		        rulesText += line + "\n";
+	       
+		    }
+			//System.out.println(rulesText);
+			InputStream is = new ByteArrayInputStream(rulesText.getBytes());
+			br = new BufferedReader(new InputStreamReader(is));
 
 		} catch (FileNotFoundException e1) {
 			e1.printStackTrace();
@@ -95,6 +99,23 @@ public class Interpreter {
 			return e.getMessage();
 		}
         rules = parser.getRules();
+      
+        for(Rule rule : rules){
+        	
+	    	System.out.println(rule);
+	    	if(!rule.getSubrules().isEmpty()){
+				System.out.println("subregla de "+rule.getName());
+				System.out.println(rule.getSubrules());
+				if(!rule.getSubrules().get(0).getSubrules().isEmpty()){
+					System.out.println("subregla de "+rule.getSubrules().get(0).getName());
+					System.out.println(rule.getSubrules().get(0).getSubrules().get(0));
+					
+				}
+			}
+        	
+	    	Utils.putBackSpecialCharactersInRule(rule);
+        }
+    
 		return "";
     	
     }

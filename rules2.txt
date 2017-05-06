@@ -11,26 +11,27 @@
 \maketitle
 
 /header/
+begin{
 
-BOLD -> **TEXT** -> \textbf{TEXT}
-ITAlIC -> *TEXT* -> \textit{TEXT}
-SECTION -> ###TEXT -> \\subsubsection{TEXT}
-SECTION -> ##TEXT -> \\subsection{TEXT}
-SECTION -> #TEXT -> \\section{TEXT}
-NEWPAGE -> %TEXT -> \\newpage TEXT
+	LABEL -> @ text @ -> <a_name=" text ">
+	ITAlIC -> * text * -> \textit\{ text \}
+	BOLD -> ** text ** -> \textbf\{ text \}
+	SECTIONNN -> # text -> \section\{ text \}
+	SECTIONN -> ## text -> \subsection\{ text \}
+	SECTION -> ### text -> \subsubsection\{ text \}
+	NEWPAGE -> % text -> \newpage text
 
-
-ITEM -> +TEXT -> \\item TEXT 
-LIST ->   ITEM  ->  \\begin{itemize} ITEM \\end{itemize}
-
-COL -> {TEXT} -> TEXT &
-ROW -> -COL -> COL \\\
-TABLE -> = ROW = -> \begin{tabular}{ l  l  l } ROW \end{tabular}
-
-LABEL -> @TEXT@ -> <a name="TEXT">
-IMG -> ![TEXT](LITERAL) -> \\includegraphics{LITERAL TEXT}
-LINK -> [TEXT](LITERAL) -> \\href{LITERAL}{TEXT}
-
+	
+	nested{
+		LIST ->   text  ->  \\begin\{itemize\}_ text _\\end\{itemize\}
+		ITEM -> + text -> \\item_ text 
+	}
+	
+	LINK -> [ text ] ( literal ) -> \\href\{ literal \}\{ text \}	
+	IMG -> ![ text ] ( literal ) -> \\includegraphics\{_ literal _ text _\}
+	
+}
+	
 /footer/
 
 \end{document}

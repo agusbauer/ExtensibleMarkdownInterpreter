@@ -34,8 +34,8 @@ begin{
 	
 	LABEL -> @ text @ -> <a_name=" text ">
 	
-	IMG -> ![ text ] ( literal ) -> <img_src=" literal "_alt=" text "></img>
 	LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a>
+	IMG -> ![ text ] ( literal ) -> <img_src=" literal "_alt=" text "></img>
 	
 }
 

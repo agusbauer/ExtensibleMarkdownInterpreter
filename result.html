@@ -1,44 +1,46 @@
-  
-
-<!DOCTYPE html>
-<html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
 
 
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\title{Interprete Extensible de Markdown}
+\date{2013-09-01}
+\author{Agustin Bauer, Alan Gonzalez}
+\begin{document}
+\maketitle
 
-	<a name="TOP">
-	<h1>Interprete Extensible Markdown IR HACIA <a href="#BOT">ABAJO</a></h1>
-	
-	<h2>Ejemplos</h2>
-	
-	<p> Hola, esto es un parrafo, ahora hay una <em>cursiva</em>, ahora una <strong>negrita</strong> y por ultimo una <strong> <em>curisvanegrita</em> </strong></p>
-	<p> Ahora te pongo un # escapado y un * escapado.</p>
-	
-	
-	<h3>Ejemplos Listas</h3>
-	
-	<h4>Lista no ordenada</h4>
-	<ul><li>elemento1 con <em>cursiva</em></li>
-	<li>elemento2 con <strong>negrita</strong></li>
-	<li>elemento3</li></ul>
-	
-	<h4>Lista ordenada</h4>
-	<ol><li> <u>item1 subrayado</u></li>
-	<li>item2</li>
-	<li>item3</li></ol>
 
-	<h4> Ejemplo con links</h4>
-	<p> podes ir a <a href="https://www.google.com.ar">google</a> o a <a href="https://www.wikipedia.org/">wikipedia</a></p>
-	
-	
-	<h4> Y por ultimo, un gif, mira</h4>
-	!<a href=" https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif ">imagensita</a>
 
-	<a name="BOT">
+	section{Interprete Extensible Markdown}
+	
+	subsection{Ejemplos}
+	
+	Hola, esto es un parrafo, ahora hay una \textit{cursiva}, ahora una \textbf{negrita} y por ultimo una \textbf{ \textit{curisvanegrita} }
+	Ahora te pongo un # escapado y un * escapado.
+	
+	newpage
+	
+	subsubsection{Ejemplos Listas}
+	
+	subsubsection{Lista no ordenada}
+	
+		\begin{itemize} 
+                \item elemento1
+		\item elemento2
+		\item elemento3
+                 \end{itemize}
+	
 
-</body>
-</html>
+	subsubsection{ Ejemplo con links}
+	podes ir a \href{https://www.google.com.ar}{google} 
+	o a \href{https://www.wikipedia.org/}{wikipedia}
+	
+	subsubsection{ Y por ultimo, una imagen, mira}
+	\includegraphics{ foto.png  }
+	
+
+
+\end{document}
+
 
