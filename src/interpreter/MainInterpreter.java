@@ -1,10 +1,12 @@
 package interpreter;
 
+import java.io.IOException;
+
 import ui.UIApp;
 
 public class MainInterpreter {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		if(args.length == 2){
 			System.out.println("Compilando archivo de reglas...");
