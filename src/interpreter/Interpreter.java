@@ -102,7 +102,7 @@ public class Interpreter {
       
         for(Rule rule : rules){
         	
-	    	System.out.println(rule);
+	    	/*System.out.println(rule);
 	    	if(!rule.getSubrules().isEmpty()){
 				System.out.println("subregla de "+rule.getName());
 				System.out.println(rule.getSubrules());
@@ -111,7 +111,7 @@ public class Interpreter {
 					System.out.println(rule.getSubrules().get(0).getSubrules().get(0));
 					
 				}
-			}
+			}*/
         	
 	    	Utils.putBackSpecialCharactersInRule(rule);
         }
