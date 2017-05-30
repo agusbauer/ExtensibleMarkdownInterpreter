@@ -4,8 +4,10 @@ public class Utils {
 	
 	public static final String SPECIAL_CHARACTERS = "!\"#$%&'()*+,-./:;<=>?@[]^_`{|}~";
 	
-	private static String[] CHARACTERS_TO_ESCAPE_FOR_RULES = {"{","}","_"};
-    private static String[] SPECIAL_STRINGS_FOR_RULES = {"AAAAAAAAqwertyuAAAAAAAA","BBBBBBBBqwertyuBBBBBBBB","CCCCCCCCqwertyuCCCCCCCC","DDDDDDDDqwertyuDDDDDDDD"};
+	private static String[] CHARACTERS_TO_ESCAPE_FOR_RULES = {"{","}","_","[","]","(",")","->","begin","/header/","/footer/"};
+    private static String[] SPECIAL_STRINGS_FOR_RULES = {"AAAAAAAAqwertyuAAAAAAAA","BBBBBBBBqwertyuBBBBBBBB","CCCCCCCCqwertyuCCCCCCCC","DDDDDDDDqwertyuDDDDDDDD",
+    													 "EEEEEEEEqwertyuEEEEEEEE","FFFFFFFFqwertyuFFFFFFFF","GGGGGGGGqwertyuGGGGGGGG","HHHHHHHHqwertyuHHHHHHHH",
+    													 "IIIIIIIIqwertyuIIIIIIII","JJJJJJJJqwertyuJJJJJJJJ","KKKKKKKKqwertyuKKKKKKKK","LLLLLLLLqwertyuLLLLLLLL"};
 	
 	public static String addEscapeCharacters(String expression){
         String result = expression;
