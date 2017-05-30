@@ -87,9 +87,6 @@ public class UIApp extends javax.swing.JFrame {
 				
 			}
 		}
-		
-		File htmlFile = new File("result.html");
-		Desktop.getDesktop().browse(htmlFile.toURI());
 	}
 
 	private void btnCreateRulesActionPerformed(java.awt.event.ActionEvent evt) {
@@ -339,6 +336,28 @@ public class UIApp extends javax.swing.JFrame {
 		jMenu2.add(btnLoadText);
 
 		jMenuBar1.add(jMenu2);
+		
+		menuViewer = new javax.swing.JMenu();
+		menuViewer.setText("Visualizar como..."); 
+		
+		htmlViewer = new javax.swing.JMenuItem();
+		htmlViewer.setText("HTML");
+		htmlViewer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	System.out.println("html");
+            	DialogCreateEditRules.stringToFile("htmlviewer.html", Interpreter.execute("original-text"));
+            	File htmlFile = new File("htmlviewer.html");
+        		try {
+					Desktop.getDesktop().browse(htmlFile.toURI());
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+            }
+        });
+		
+		menuViewer.add(htmlViewer);
+		
+		jMenuBar1.add(menuViewer);
 
 		setJMenuBar(jMenuBar1);
 
@@ -388,5 +407,7 @@ public class UIApp extends javax.swing.JFrame {
 	private javax.swing.JScrollPane jScrollPane2;
 	private JTextComponent txtInput;
 	private JTextComponent txtOutput;
+	private javax.swing.JMenu menuViewer;
+	private javax.swing.JMenuItem htmlViewer;
 
 }
