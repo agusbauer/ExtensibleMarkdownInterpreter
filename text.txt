@@ -1,31 +1,5 @@
 
 
-	@TOP@
-	#Interprete Extensible Markdown IR HACIA [ABAJO](#BOT)
-	
-	##Ejemplos
-	
-	& Hola, esto es un parrafo, ahora hay una *cursiva*, ahora una **negrita** y por ultimo una ** *curisvanegrita* **
-	& Ahora te pongo un \# escapado y un \* escapado.
-	
-	
-	###Ejemplos Listas
-	
-	####Lista no ordenada
-	+elemento1 con *cursiva*
-	+elemento2 con **negrita**
-	+elemento3
-	
-	####Lista ordenada
-	$ %item1 subrayado%
-	$item2
-	$item3
-
-	#### Ejemplo con links
-	& podes ir a [google](https://www.google.com.ar) o a [wikipedia](https://www.wikipedia.org/)
-	
-	
-	#### Y por ultimo, un gif, mira
-	![imagensita]( https://media.giphy.com/media/XreQmk7ETCak0/giphy.gif )
-
-	@BOT@
+	%asdasd
+	*asdasd*
+	@asdasd@
