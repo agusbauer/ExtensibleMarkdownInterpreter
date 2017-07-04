@@ -6,7 +6,7 @@ import jregex.Replacer;
 import jregex.Substitution;
 import jregex.TextBuffer;
 
-public class Parser {
+public class Parser2 {
 	
 	 public static String nestedRulesParser(String txtToTranslate){
 	    	if(Interpreter.currentStaticRule.getOriginalExprDelimiters().areEmpties()){ // listas sin marca inicial ni final
@@ -18,9 +18,17 @@ public class Parser {
 	    		Pattern pattern = new Pattern(Interpreter.currentStaticRule.getSubrules().get(0).getOriginalExpression());
 	    		Replacer rep = pattern.replacer(patternStr);
 	    		txtToTranslate =  rep.replace(txtToTranslate);
+	   
+	    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);//reemplaza por vacio los delimitadores iniciales y finales repetidos
+	    		rep = pattern.replacer("$1"); 
+	    		txtToTranslate =  rep.replace(txtToTranslate);
 	    		
-	    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);
-	    		rep = pattern.replacer("$1");   		
+	    		pattern = new Pattern(replExprSPlitted[0]);
+	    		rep = pattern.replacer(replExprSPlitted[0] + "\n                "); 
+	    		txtToTranslate =  rep.replace(txtToTranslate);
+	    		
+	    		pattern = new Pattern(replExprSPlitted[1]);
+	    		rep = pattern.replacer("\n                " + replExprSPlitted[1]); 
 	    		txtToTranslate =  rep.replace(txtToTranslate);
 	    		
 	    		return txtToTranslate;
@@ -50,7 +58,7 @@ public class Parser {
 	              Replacer myVeryOwnReplacer=new Replacer(pattern,myOwnModel);
 	              //Replacer r2 = pattern.replacer(Interpreter.currentStaticRule.getReplacerExpression());
 	              txtToTranslate = myVeryOwnReplacer.replace(txtToTranslate);  
-	              txtToTranslate = Parser.applyRuleInText(txtToTranslate,Interpreter.currentStaticRule);
+	              txtToTranslate = Parser2.applyRuleInText(txtToTranslate,Interpreter.currentStaticRule);
 	              //txtToTranslate = r2.replace(txtToTranslate);
 	              return txtToTranslate;
 	    	}	

@@ -54,7 +54,7 @@ public class Delimiters {
 
 	@Override
 	public String toString() {
-		return beginToken + endToken;
+		return "["+beginToken + "," + endToken +"]";
 	}
 	
 	

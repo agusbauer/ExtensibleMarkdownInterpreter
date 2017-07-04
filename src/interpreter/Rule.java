@@ -132,8 +132,8 @@ public class Rule {
 		return subrules;
 	}
 
-	public void setSubrules(ArrayList<Rule> subrules) {
-		this.subrules = subrules;
+	public void addSubrule(Rule subrule) {
+		this.subrules.add(subrule);
 	}
 	/************************** End Getters and Setters Section **************************/
 	
@@ -141,7 +141,7 @@ public class Rule {
 	@Override
     public String toString() {
 		
-        return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + '}';
+        return "Rule{" + "name=" + name + ", originalExpression=" + originalExpression + ", replacerExpression=" + replacerExpression + ", id=" + id + ", delimiters=" + replacerExprDelimiters +'}';
     }
 
     
