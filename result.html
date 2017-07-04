@@ -1,46 +1,37 @@
 
 
-\documentclass{article}
-\usepackage[utf8]{inputenc}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\title{Interprete Extensible de Markdown}
-\date{2013-09-01}
-\author{Agustin Bauer, Alan Gonzalez}
-\begin{document}
-\maketitle
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+</head>
+<body>
 
 
 
-	section{Interprete Extensible Markdown}
+	<h1>ExMark: Manual de usuario</h1>
 	
-	subsection{Ejemplos}
+	<h2>Instalacion y ejecucion</h2>
 	
-	Hola, esto es un parrafo, ahora hay una \textit{cursiva}, ahora una \textbf{negrita} y por ultimo una \textbf{ \textit{curisvanegrita} }
-	Ahora te pongo un # escapado y un * escapado.
+	<p>Para poder ejecutar la herramienta es necesario tener java en el equipo, se puede descargar haciendo click <a href="https://www.google.com.ar">aqui</a>. </p> 
+	<p>Una vez que tengamos java instalado, podremos proceder a instalar ExMark, el mismo se puede descargar del siguiente <a href="https://www.google.com.ar">repo</a></p>
 	
-	newpage
+	<h3>Ejecucion de la interfaz grafica</h3>
+	<p>para abrir la interfaz grafica simplemente debemos ejecutar el archivo <strong>ExMark.jar</strong> haciendo doble click en el</p>
 	
-	subsubsection{Ejemplos Listas}
+	<h3>Ejecucion mediante consola</h3>
+	<p>Para ejectuar la herramienta mediante la linea de comandos debemos ejectuar la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo</p>
+	<code>java -jar ExMark archivoReglas.em archivoTexto.txt</code>
+	<p>Tener en cuenta que archivoReglas.em y archivoTexto.txt deben estar ubicados en la misma carpeta que ExMark.jar</p>
 	
-	subsubsection{Lista no ordenada}
-	
-		\begin{itemize} 
-                \item elemento1
-		\item elemento2
-		\item elemento3
-                 \end{itemize}
-	
+	<h2></h2>
 
-	subsubsection{ Ejemplo con links}
-	podes ir a \href{https://www.google.com.ar}{google} 
-	o a \href{https://www.wikipedia.org/}{wikipedia}
 	
-	subsubsection{ Y por ultimo, una imagen, mira}
-	\includegraphics{ foto.png  }
+	
 	
 
 
-\end{document}
+</body>
+</html>
 
 
