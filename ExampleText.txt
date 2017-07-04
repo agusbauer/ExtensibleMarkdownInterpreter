@@ -1,0 +1,84 @@
+
+
+	#ExMark: Manual de usuario
+	
+	##Guia de instalación
+	
+	%Para poder ejecutar la herramienta es necesario tener java en el equipo, se puede descargar haciendo click [aqui](https://www.java.com/es/download/). % 
+	%ExMark se puede descargar del siguiente repositorio en github [repositorio](https://github.com/agusbauer/ExtensibleMarkdownInterpreter/tree/master)%
+	%Una vez ubicados en el repositorio procederemos a descargarlo haciendo click en "clone or download" y luego "download zip" como se puede ver en la imagen%
+	![exMark descarga](https://k60.kn3.net/F/D/5/C/D/C/A56.png)
+	%Luego de descargar el zip debemos extraelo en cualquier carpeta%
+	
+	###Ejecución de la interfaz gráfica
+	%para abrir la interfaz gráfica simplemente debemos ejecutar el archivo *ExMark.jar* haciendo doble click en el%
+	
+	###Ejecucion mediante consola
+	%Para ejectuar la herramienta mediante la linea de comandos debemos ejectuar la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo%
+	&java -jar ExMark archivoReglas.em archivoTexto.txt&
+	%Tener en cuenta que archivoReglas.em y archivoTexto.txt deben estar ubicados en la misma carpeta que ExMark.jar%
+	
+	##Primeros pasos
+	
+	%ExMark permite al usuario definir reglas y aplicarlas a un texto% 
+	%En la carpeta donde descargamos el programa se encuentra el archivo *defaulHtmlRules.em*, el cual contiene un conjunto de reglas que traducen un texto a HTML y otro archivo con un texto de ejemplo *ExampleText.txt*%
+	%Al ejecutar la herramienta con estos archivos como parametros, si todo anduvo bien, deberiamos obtener un nuevo archivo *result.html*, el cual es el resultado de aplicar las reglas al texto de ejemplo%
+	%Si se abre el archivo result.html con cualquier explorador se deberia poder visualizar sin problemas este mismo manual de usuario. Asi es! el manual fue realizado con ExMark%
+	
+	##Definicion de reglas
+	
+	%Todos los archivos de reglas deben tener la extensión .em%
+	
+	%Un archivo de reglas se puede dividir en 3 partes principales: las secciones $header$,$footer$ y $body$ %
+	
+	###Sección header
+	
+	%Se puede incluir al comienzo del archivo, mediante los delimitadores */header/* , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al incio del archivo resultado%
+	%En el archivo defaultHtmlRules.em podemos ver un ejemplo de header, el cual contiene la estructura de un documento html que va a ser igual para todas las traducciones que se apliquen%
+	
+	###Sección footer
+	
+	%Se puede incluir al final del archivo, mediante los delimitadores */footer/* , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al final del archivo resultado%
+	%En el archivo defaultHtmlRules.em podemos ver un ejemplo de footer, el cual contiene la estructura de un documento html que va a ser igual para todas las traducciones que se apliquen%
+	
+	###Sección body
+	
+	%Esta sección comienza con $body{$ y termina con $}$%
+	%Acá es donde se definen las reglas propiamente dichas, podemos diferenciar 3 tipos de reglas: $reglas simples$, $reglas anidadas$ y $reglas compuestas$%
+	
+	####Reglas simples
+	
+	%La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal -> DelimitadorInicial text DelimitadorFinal%
+	%Por ejemplo: & BOLD -> \* text \* -> \&lt;strong\&gt; text \&lt;/strong\&gt; &. Esta regla indica que siempre que se encuentre algo que comience con \* y termine con \* el interprete lo reemplazara por \&lt;strong\&gt; y \&lt;/strong\&gt;%
+	
+	####Reglas anidadas
+	%Toda regla anidada debe comenzar con 'nested{' y terminar con '}', en su interior puede contener hasta 3 reglas simples%
+	%Por ejemplo:% 
+	&nested{
+		%LIST -> text ->  \&lt;ul\&gt; text \&lt;/ul\&gt;%
+		%ITEM -> - text -> \&lt;li\&gt; text \&lt;/li\&gt;%
+	}&
+	%Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "\&lt;li\&gt;" y "\&lt;/li\&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "\&lt;ul\&gt;" y "\&lt;/ul\&gt;" respectivamente%
+	
+	####Reglas compuestas 
+	%La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal ( literal ) -> Delimitador1 literal Delimitador2 text Delimitador3%
+	%Las reglas compuestas son aquellas que tienen dos partes variables.
+	Son similares a las reglas simples con la diferencia de que su expresión original está formada por la expresión igual que en la regla simple (en este caso es "![ text ]" ) seguida de ( literal ).
+	Luego en la traducción se puede usar la variable "literal" en cualquier lado, al igual que "text".%
+	%Ejemplo: & LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a> & %
+	
+	##Interfaz gráfica
+	%Al abrir el programa nos encontraremos con la siguiente pantalla:%
+	![exMark frontend1](https://k60.kn3.net/A/A/4/9/B/C/8F0.png)
+	
+	%Lo primero que podemos hacer es crear o cargar un archivo de reglas para que sea utilizado por el interprete, esto se realiza accediendo al menu "reglas" en la esquina superior izquierda%
+	%En este menu tendremos la opción de cargar un archivo de reglas con extension .em que tengamos y tambien se podrá crear o modificar reglas mediante la opción "gestionar reglas", la cual abrirá la siguiente pantalla de diseño de reglas%
+	
+	![exMark frontend2](https://k60.kn3.net/A/1/E/5/1/2/54B.png)
+	
+	%Volviendo a la pantalla principal podremos escribir el texto y a la derecha podremos ver los resultados de aplicarle las reglas cargadas al texto en tiempo real, como se puede ver en la siguiente imagen%
+	![exMark frontend3](https://k60.kn3.net/6/C/A/9/1/0/934.png)
+	
+	
+	
+	

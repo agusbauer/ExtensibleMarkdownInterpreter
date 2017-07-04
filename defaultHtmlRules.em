@@ -19,6 +19,7 @@ begin{
 	TITLE -> # text -> <h1> text </h1>
 	TITLE2 -> ## text -> <h2> text </h2>
     TITLE3 -> ### text -> <h3> text </h3>
+    TITLE4 -> #### text -> <h4> text </h4>
 
 	
 	nested{

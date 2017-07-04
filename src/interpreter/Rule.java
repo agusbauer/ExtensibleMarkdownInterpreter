@@ -48,13 +48,13 @@ public class Rule {
         if(originalExprDelimiters.hasEndToken()){       	
         	String endDelimiterEscaped = Utils.addEscapeCharacters(originalExprDelimiters.getEndToken());
         	
-            result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)" + endDelimiterEscaped ;
+            result += beginDelimiterEscaped + "([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"óíúáé]*)" + endDelimiterEscaped ;
             if(originalExprDelimiters.isComposed()){
             	result += "\\(([\\p{Alnum}\\p{Space}"+ spCharWithoutCurrToken +"]*)\\)";
             }
         }
         else{
-            result += beginDelimiterEscaped + "([\\p{Graph}\\p{Blank}]*)";
+            result += beginDelimiterEscaped + "([\\p{Graph}\\p{Blank}óíúáé]*)";
         }
         return result;
     }   
