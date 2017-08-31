@@ -40,17 +40,15 @@ public class Interpreter {
 			e.printStackTrace();
 		}
 		
-
+		System.out.println(rulesText);
         String[] splittedHeader = rulesText.split("/header/");
         String header = "";
         String footer = "";
     	if(splittedHeader.length == 3){
-    		rulesText = splittedHeader[2];
     		header = splittedHeader[1];
     	}
     	String[] splittedFooter = rulesText.split("/footer/");
     	if(splittedFooter.length == 3){
-    		rulesText = splittedFooter[0];
     		footer = splittedFooter[1];
     	}
         
