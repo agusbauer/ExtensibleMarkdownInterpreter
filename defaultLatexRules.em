@@ -13,13 +13,13 @@
 /header/
 begin{
 
-	LABEL -> @ text @ -> \/header/ text \)
-	ITAlIC -> * text * -> /header/ text <-
-	BOLD -> ** text ** -> \textbf\{ text \}
-	SECTIONNN -> # text -> \section\{ text \}
-	SECTIONN -> ## text -> \subsection\{ text \}
-	SECTION -> ### text -> \subsubsection\{ text \}
-	NEWPAGE -> % text -> \begin text \]pl[
+	BOLD -> * text * -> \textbf\{ text \}
+	LABEL -> @ text @ -> \hypertarget\{ text \}\{\}
+	ITAlIC -> $ text $ -> \textit\{ text \}
+	UNDERLINE -> $$ text $$ -> \underline\{ text \}
+	SECTION -> # text -> \section\{ text \}
+	SECTION2 -> ## text -> \subsection\{ text \}
+	SECTION3 -> ### text -> \subsubsection\{ text \}
 	
 
 	
@@ -30,6 +30,7 @@ begin{
 	
 	LINK -> [ text ] ( literal ) -> \\href\{ literal \}\{ text \}	
 	IMG -> ![ text ] ( literal ) -> \\includegraphics\{_ literal _ text _\}
+	HYPERLINK -> !![ text ] ( literal ) -> \\hyperlink\{ literal \}\{ text \}	
 	
 }
 	
