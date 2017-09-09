@@ -21,17 +21,22 @@ begin{
 	TITLE2 -> ## text -> <h2> text </h2>
     TITLE3 -> ### text -> <h3> text </h3>
     TITLE4 -> #### text -> <h4> text </h4>
-   
-
+    
+	nested{
+		LIST -> text -> <ul> text </ul>
+		ITEM -> + text -> <li> text </li>
+	}
 	
 	nested{
-		LIST ->   text  ->  <ul> text </ul>
-		ITEM -> + text -> <li> text </li>
+		TABLE ->  text -> <table> text </table>
+		ROW  -> ¡ text  -> <tr> text </tr>
+		COL -> - text - -> <td> text </td>
 	}
 	
 	LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a>
 	IMG -> ![ text ] ( literal ) -> <img_src=" literal "alt=" text ">
-	
+	HYPERLINK -> !![ text ] ( literal ) -> <a_href=" literal "> text </a>
+
 }
 	
 /footer/

@@ -21,8 +21,6 @@ begin{
 	SECTION2 -> ## text -> \subsection\{ text \}
 	SECTION3 -> ### text -> \subsubsection\{ text \}
 	
-
-	
 	nested{
 		LIST ->   text  ->  \\begin\{itemize\}_ text _\\end\{itemize\}
 		ITEM -> + text -> \\item_ text 

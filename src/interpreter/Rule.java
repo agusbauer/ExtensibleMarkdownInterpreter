@@ -135,8 +135,11 @@ public class Rule {
 	public void addSubrule(Rule subrule) {
 		this.subrules.add(subrule);
 	}
-	/************************** End Getters and Setters Section **************************/
 	
+	public boolean hasSubrules(){
+		return subrules != null && subrules.size() > 0;
+	}
+	/************************** End Getters and Setters Section **************************/
 
 	@Override
     public String toString() {
