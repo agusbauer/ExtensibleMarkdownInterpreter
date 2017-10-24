@@ -1,6 +1,0 @@
-begin{
-   BOLD -> * text * -> <strong> text </strong>
-   ITALIC -> $ text $ -> <em> text </em>
-   TITLE -> # text -> <h1> text </h1>	
-
-}
