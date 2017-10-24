@@ -69,7 +69,7 @@ public class UIApp extends javax.swing.JFrame {
 			
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.startsWith("rule");
+				return name.endsWith(".em");
 			}
 		});
 
