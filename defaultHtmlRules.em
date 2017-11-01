@@ -12,11 +12,11 @@
 begin{
 
 	BOLD -> * text * -> <strong> text </strong>
+	ITAlIC -> ** text ** -> <em> text </em>
 	LABEL -> @ text @ -> <a_name=" text "></a>
-	ITAlIC -> $ text $ -> <em> text </em>
-	UNDERLINE -> $$ text $$ -> <u> text </u>
-	PARAPH -> % text % -> <p> text </p>
-	CODE -> & text & -> <code> text </code>
+	UNDERLINE -> _ text _ -> <u> text </u>
+	PARAPH -> $ text $ -> <p> text </p>
+	CODE ->  ` text ` -> <code> text </code>
 	TITLE -> # text -> <h1> text </h1>
 	TITLE2 -> ## text -> <h2> text </h2>
     TITLE3 -> ### text -> <h3> text </h3>
@@ -29,7 +29,7 @@ begin{
 	
 	nested{
 		TABLE ->  text -> <table> text </table>
-		ROW  -> ¡ text  -> <tr> text </tr>
+		ROW  -> ¡ text -> <tr> text </tr>
 		COL -> - text - -> <td> text </td>
 	}
 	

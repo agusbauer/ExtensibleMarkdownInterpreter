@@ -28,6 +28,10 @@ public class Delimiters {
 		return !endToken.isEmpty();
 	}
 	
+	public boolean hasBeginToken(){
+		return !beginToken.isEmpty();
+	}
+	
 	public boolean isComposed() {
 		return composed;
 	}
