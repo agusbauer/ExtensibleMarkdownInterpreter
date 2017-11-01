@@ -13,7 +13,6 @@ public class Parser2 {
 	 public static String nestedRulesParser(String txtToTranslate){
 	    	if(Interpreter.currentStaticRule.getOriginalExprDelimiters().areEmpties()){ // listas sin marca inicial ni final
 	    		
-	    		System.out.println("sin marca inicial ni final");
 	    		String[] replExprSPlitted = Interpreter.currentStaticRule.getReplacerExpression().split("\\$1");
 	    		String patternStr = "";
 	    		if(replExprSPlitted.length == 2){
@@ -21,21 +20,43 @@ public class Parser2 {
 	    		}
 	    		
 	    		Rule subrule = Interpreter.currentStaticRule.getSubrules().get(0);
+	   
+	    		if(subrule.hasSubrules()){ //primero remplaza lo de la sub sub regla
+	    			Rule subsubrule = subrule.getSubrules().get(0);
+	    			Pattern pattern = new Pattern(subsubrule.getOriginalExpression());
+	    			Replacer rep = pattern.replacer(subsubrule.getReplacerExpression());
+		    		
+	    			if(subrule.getOriginalExprDelimiters().hasBeginToken() && !subrule.getOriginalExprDelimiters().hasEndToken()){
+	    				
+		    			String[] spltText1 = txtToTranslate.split(subrule.getOriginalExprDelimiters().getBeginToken());
+		    			String r = spltText1[0];
+		    			
+		    			for (int i = 1; i < spltText1.length; i++) {
+		    				String[] splttxt2 = spltText1[i].split("\n",2);
+		    				if(splttxt2.length > 1){
+		    					r += subrule.getOriginalExprDelimiters().getBeginToken() + rep.replace(splttxt2[0]) + "\n" + splttxt2[1];
+		    				}
+		    				else{
+		    					r += subrule.getOriginalExprDelimiters().getBeginToken() + rep.replace(splttxt2[0]) + "\n";
+		    				}
+		    			}
+
+		    			txtToTranslate = r;
+		    			
+	    			}
+	    			else{
+	    				txtToTranslate =  rep.replace(txtToTranslate);
+	    			}
+		    		
+	    		}
 	    		
-	    		Pattern pattern = new Pattern(subrule.getOriginalExpression());
+	    		Pattern pattern = new Pattern(subrule.getOriginalExpression()); //aca reemplaza lo de la subregla
 	    		Replacer rep = pattern.replacer(patternStr);
 	    		txtToTranslate =  rep.replace(txtToTranslate);
 	   
 	    		pattern = new Pattern(replExprSPlitted[1] + "([\\p{Space}]*)" + replExprSPlitted[0]);//reemplaza por vacio los delimitadores iniciales y finales repetidos
 	    		rep = pattern.replacer("$1"); 
 	    		txtToTranslate =  rep.replace(txtToTranslate);
-	   
-	    		if(subrule.hasSubrules()){
-	    			Rule subsubrule = subrule.getSubrules().get(0);
-		    		pattern = new Pattern(subsubrule.getOriginalExpression());
-		    		rep = pattern.replacer(subsubrule.getReplacerExpression());
-		    		txtToTranslate =  rep.replace(txtToTranslate);
-	    		}
 	    		
 	    		pattern = new Pattern(replExprSPlitted[0]); //Es solo para indentar el delimitador inicial
 	    		rep = pattern.replacer(replExprSPlitted[0] + "\n                "); 
@@ -48,7 +69,7 @@ public class Parser2 {
 	    		return txtToTranslate;
 	    	}
 	    	else{ //listas con marca inicial y final
-	    		System.out.println("con marca inicial ni final");
+	    		System.out.println("con marca inicial y final");
 
 	    		Substitution myOwnModel=new Substitution(){
 	    			@Override
