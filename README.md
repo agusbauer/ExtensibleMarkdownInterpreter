@@ -4,6 +4,7 @@
 
 Para poder ejecutar la herramienta es necesario tener java en el equipo, se puede descargar desde [aqui](https://www.java.com/es/download/). 
 Para descargar ExMark debemos hacer click en "clone or download" y luego "download zip" como se puede ver en la imagen:
+
 ![exMark descarga](https://k60.kn3.net/F/D/5/C/D/C/A56.png)
 
 Luego de descargar el zip debemos extraelo en cualquier carpeta.
