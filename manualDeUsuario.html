@@ -24,14 +24,14 @@
 	
 	<h3>Ejecucion mediante consola</h3>
 	<p>Para ejectuar la herramienta mediante la linea de comandos debemos ejectuar la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo</p>
-	<code>java <td>jar ExMark archivoReglas.em archivoTexto.txt</code>
+	<code>java -jar ExMark archivoReglas.em archivoTexto.txt</code>
 	<p>Tener en cuenta que archivoReglas.em y archivoTexto.txt deben estar ubicados en la misma carpeta que ExMark.jar</p>
 	
 	<h2>Primeros pasos</h2>
 	
-	<p>ExMark permite al usuario definir reglas y aplicarlas a un texto</p> 
-	<p>En la carpeta donde descargamos el programa se encuentra el archivo <strong>defaulHtmlRules.em</strong>, el cual contiene un conjunto de reglas que traducen un texto a HTML y otro archivo con un texto de ejemplo <strong>ExampleText.txt</strong></p>
-	<p>Al ejecutar la herramienta con estos archivos como parametros, si todo anduvo bien, deberiamos obtener un nuevo archivo <strong>result.html</strong>, el cual es el resultado de aplicar las reglas al texto de ejemplo</p>
+	<p>ExMark permite al usuario definir reglas y aplicarlas a un texto</p>
+	<p>En la carpeta donde descargamos el programa se encuentra el archivo <strong>defaulHtmlRules.em</strong>, el cual contiene un conjunto de reglas que traducen un texto a HTML y otro archivo <strong>manualDeUsuario.txt</strong></p>
+	<p>Al ejecutar la herramienta con estos archivos como parametros, si todo anduvo bien, deberiamos obtener un nuevo archivo <strong>manualDeUsuario.html</strong>, el cual es el resultado de aplicar las reglas al texto de ejemplo</p>
 	<p>Si se abre el archivo result.html con cualquier explorador se deberia poder visualizar sin problemas este mismo manual de usuario. Asi es! el manual fue realizado con ExMark</p>
 	
 	<h2>Definicion de reglas</h2>
@@ -42,39 +42,39 @@
 	
 	<h3>Sección header</h3>
 	
-	<p>Se puede incluir al comienzo del archivo, mediante los delimitadores <strong>/header/</strong> , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al incio del archivo resultado</p>
+	<p>Se puede incluir al comienzo del archivo, mediante los delimitadores <em>/header/</em> , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al incio del archivo resultado</p>
 	<p>En el archivo defaultHtmlRules.em podemos ver un ejemplo de header, el cual contiene la estructura de un documento html que va a ser igual para todas las traducciones que se apliquen</p>
 	
 	<h3>Sección footer</h3>
 	
-	<p>Se puede incluir al final del archivo, mediante los delimitadores <strong>/footer/</strong> , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al final del archivo resultado</p>
+	<p>Se puede incluir al final del archivo, mediante los delimitadores <em>/footer/</em> , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al final del archivo resultado</p>
 	<p>En el archivo defaultHtmlRules.em podemos ver un ejemplo de footer, el cual contiene la estructura de un documento html que va a ser igual para todas las traducciones que se apliquen</p>
 	
 	<h3>Sección body</h3>
 	
-	<p>Esta sección comienza con <em>body{</em> y termina con <em>}</em></p>
+	<p>Esta sección comienza con <em>body{</em> y termina con <em>}</em> </p>
 	<p>Acá es donde se definen las reglas propiamente dichas, podemos diferenciar 3 tipos de reglas: <em>reglas simples</em>, <em>reglas anidadas</em> y <em>reglas compuestas</em></p>
 	
 	<h4>Reglas simples</h4>
 	
-	<p>La estructura es: NombreRegla </td>> DelimitadorInicial text DelimitadorFinal <td>> DelimitadorInicial text DelimitadorFinal</p>
-	<p>Por ejemplo: <code> BOLD </td>> * text * -> &lt;strong&gt; text &lt;/strong&gt; </code>. Esta regla indica que siempre que se encuentre algo que comience con * y termine con * el interprete lo reemplazara por &lt;strong&gt; y &lt;/strong&gt;</p>
+	<p>La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal -> DelimitadorInicial text DelimitadorFinal</p>
+	<p>Por ejemplo: <code> BOLD -> ** text ** -> \&lt;strong\&gt; text \&lt;/strong\&gt; </code>. Esta regla indica que siempre que se encuentre algo que comience con ** y termine con ** el interprete lo reemplazara por \&lt;strong\&gt; y \&lt;/strong\&gt;</p>
 	
 	<h4>Reglas anidadas</h4>
 	<p>Toda regla anidada debe comenzar con 'nested{' y terminar con '}', en su interior puede contener hasta 3 reglas simples</p>
 	<p>Por ejemplo:</p> 
 	<code>nested{
-		<p>LIST <td>> text </td>>  &lt;ul&gt; text &lt;/ul&gt;</p>
-		<p>ITEM <td>> </td> text -> &lt;li&gt; text &lt;/li&gt;</p>
+		<p>LIST -> text ->  \&lt;ul\&gt; text \&lt;/ul\&gt;</p>
+		<p>ITEM -> - text -> \&lt;li\&gt; text \&lt;/li\&gt;</p>
 	}</code>
-	<p>Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "&lt;li&gt;" y "&lt;/li&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "&lt;ul&gt;" y "&lt;/ul&gt;" respectivamente</p>
+	<p>Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "\&lt;li\&gt;" y "\&lt;/li\&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "\&lt;ul\&gt;" y "\&lt;/ul\&gt;" respectivamente</p>
 	
 	<h4>Reglas compuestas </h4>
-	<p>La estructura es: NombreRegla <td>> DelimitadorInicial text DelimitadorFinal ( literal ) </td>> Delimitador1 literal Delimitador2 text Delimitador3</p>
+	<p>La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal ( literal ) -> Delimitador1 literal Delimitador2 text Delimitador3</p>
 	<p>Las reglas compuestas son aquellas que tienen dos partes variables.
 	Son similares a las reglas simples con la diferencia de que su expresión original está formada por la expresión igual que en la regla simple (en este caso es "![ text ]" ) seguida de ( literal ).
 	Luego en la traducción se puede usar la variable "literal" en cualquier lado, al igual que "text".</p>
-	<p>Ejemplo: <code> LINK <td>> [ text ] ( literal ) </td>> <a_href=" literal "> text </a> </code> </p>
+	<p>Ejemplo: <code> LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a> </code> </p>
 	
 	<h2>Interfaz gráfica</h2>
 	<p>Al abrir el programa nos encontraremos con la siguiente pantalla:</p>

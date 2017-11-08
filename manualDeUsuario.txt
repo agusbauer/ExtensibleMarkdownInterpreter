@@ -22,7 +22,7 @@
 	
 	$ExMark permite al usuario definir reglas y aplicarlas a un texto$
 	$En la carpeta donde descargamos el programa se encuentra el archivo **defaulHtmlRules.em**, el cual contiene un conjunto de reglas que traducen un texto a HTML y otro archivo **manualDeUsuario.txt**$
-	$Al ejecutar la herramienta con estos archivos como parametros, si todo anduvo bien, deberiamos obtener un nuevo archivo **result.html**, el cual es el resultado de aplicar las reglas al texto de ejemplo$
+	$Al ejecutar la herramienta con estos archivos como parametros, si todo anduvo bien, deberiamos obtener un nuevo archivo **manualDeUsuario.html**, el cual es el resultado de aplicar las reglas al texto de ejemplo$
 	$Si se abre el archivo result.html con cualquier explorador se deberia poder visualizar sin problemas este mismo manual de usuario. Asi es! el manual fue realizado con ExMark$
 	
 	##Definicion de reglas

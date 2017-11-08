@@ -20,7 +20,7 @@ Tener en cuenta que archivoReglas.em y archivoTexto.txt deben estar ubicados en 
 
 ### Manual de usuario
 El manual de usuario está escrito utilizando las reglas por defecto de ExMark.
-Para acceder al manual debemos ejecutar ls siguiente en la consola:
+Para acceder al manual debemos ejecutar lo siguiente en la consola:
 `java -jar ExMark defaultHtmlRules.em manualDeUsuario.txt`
-Esto producirá como resultado el archivo **ManualDeUsuario.html**, el cual se puede visualizar en cualquier navegador.
+Esto producirá como resultado el archivo **manualDeUsuario.html**, al abrirlo con cualquier explorador se deberia poder visualizar el manual de usuario.
 
