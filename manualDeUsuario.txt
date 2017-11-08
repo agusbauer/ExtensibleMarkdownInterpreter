@@ -15,7 +15,7 @@
 	
 	###Ejecucion mediante consola
 	$Para ejectuar la herramienta mediante la linea de comandos debemos ejectuar la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo$
-	`java -jar ExMark archivoReglas.em archivoTexto.txt`
+	`java -jar ExMark.jar archivoReglas.em archivoTexto.txt`
 	$Tener en cuenta que archivoReglas.em y archivoTexto.txt deben estar ubicados en la misma carpeta que ExMark.jar$
 	
 	##Primeros pasos
