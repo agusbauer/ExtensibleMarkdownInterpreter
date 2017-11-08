@@ -11,8 +11,8 @@
 
 begin{
 
-	BOLD -> * text * -> <strong> text </strong>
-	ITAlIC -> ** text ** -> <em> text </em>
+	ITAlIC -> * text * -> <em> text </em>
+	BOLD -> ** text ** -> <strong> text </strong>
 	LABEL -> @ text @ -> <a_name=" text "></a>
 	UNDERLINE -> _ text _ -> <u> text </u>
 	PARAPH -> $ text $ -> <p> text </p>
