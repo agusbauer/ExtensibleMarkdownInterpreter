@@ -53,8 +53,7 @@ public class Interpreter {
         
     	String translatedText = translate(textToTranslate);
         String result = header + translatedText + footer;
-    
-        generateHtmlFile(result, textFileName);
+  
         
         return result; 
         
@@ -149,20 +148,21 @@ public class Interpreter {
     }
  
     
-    private static void generateHtmlFile(String result, String resultName){
+    public static void generateHtmlFile(String result, String resultName){
     	FileWriter resultFile = null;
         PrintWriter pw = null;
         try
         {
         	String[] splittedResult = resultName.split("\\.",2);
         	
-        	if(splittedResult.length > 1){
-        		resultName = splittedResult[0];
-        	}
-        	        	
-            resultFile = new FileWriter(resultName+".html");
+        	if(splittedResult.length == 1){
+        		resultName = resultName+".html";
+        	}      	
+            resultFile = new FileWriter(resultName);
+            
             pw = new PrintWriter(resultFile);           
-            pw.println(result);          
+            pw.println(result);
+            System.out.println("result file name: " + resultName);
 
         } catch (Exception e) {
             e.printStackTrace();
