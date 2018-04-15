@@ -43,10 +43,10 @@ parser code {:
 
 /* Terminals (tokens returned by the scanner).*/
 
-terminal        SEPARATOR, LKEY, RKEY, LPAREN, RPAREN, SEMICOLON;
+terminal        SEPARATOR, LKEY, RKEY, LPAREN, RPAREN;
 
 /*PALABRAS RESERVADAS*/
-terminal		TEXT, BEGIN, NESTED, COMPOSED, LITERAL;
+terminal		TEXT, BEGIN, NESTED, LITERAL;
 
 /*IDENTIFICADORES*/
 terminal	String IDENTIFIER;

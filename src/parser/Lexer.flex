@@ -29,7 +29,7 @@ import java.io.Reader;
     }
 %}
 
-Id = [A-Za-z_|"\""|"="|"-"|"<"|">"|"!"|"¡"|"?"|"≤"|"≥"|"`"|":"|"."|"@"|"#"|"$"|"%"|"&"|"\*"|"\+"|"\["|"\]"|"/"|"\\"][A-Za-z_0-9|"\""|"="|"-"|"<"|">"|"!"|"¡"|"?"|"≤"|"≥"|"`"|":"|"."|"@"|"#"|"$"|"%"|"&"|"\*"|"\+"|"\["|"\]"|"/"|"\\"]*
+Id = [A-Za-z_|"\""|"="|"-"|"<"|">"|"!"|"¡"|"?"|"≤"|"≥"|"`"|":"|";"|"."|"@"|"#"|"$"|"%"|"&"|"\*"|"\+"|"\["|"\]"|"/"|"\\"][A-Za-z_0-9|"\""|"="|"-"|"<"|">"|"!"|"¡"|"?"|"≤"|"≥"|"`"|":"|";"|"."|"@"|"#"|"$"|"%"|"&"|"\*"|"\+"|"\["|"\]"|"/"|"\\"]*
 
 LineTerminator = \r|\n|\r\n
 WhiteSpace     = {LineTerminator} | [ \t\f]
@@ -57,13 +57,11 @@ public String lexeme;
 	"{"				{return symbol(sym.LKEY);}
 	"}"				{return symbol(sym.RKEY);}
 	"->"			{return symbol(sym.SEPARATOR);}
-	";"				{return symbol(sym.SEMICOLON);}
 	
 	//palabras reservadas
 	"text"		{return symbol(sym.TEXT);}
 	"begin"		{return symbol(sym.BEGIN);}
 	"nested"    {return symbol(sym.NESTED);}
-	"composed"  {return symbol(sym.COMPOSED);}
 	"literal"   {return symbol(sym.LITERAL);}
 	
 	{Id}		{return symbol(sym.IDENTIFIER, yytext());} 
