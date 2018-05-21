@@ -11,8 +11,9 @@
 	$Luego de descargar el zip debemos extraelo en cualquier carpeta$
 	
 	###Ejecución de la interfaz gráfica
-	$para abrir la interfaz gráfica simplemente debemos ejecutar el archivo **ExMark.jar** haciendo doble click en el$
-	
+	$Para abrir la interfaz gráfica debemos ejecutar en una consola la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo$
+	`java -jar ExMark.jar`
+	$ $
 	###Ejecucion mediante consola
 	$Para ejectuar la herramienta mediante la linea de comandos debemos ejectuar la siguiente linea estando posicionados en la carpeta donde se encuentra el archivo$
 	`java -jar ExMark.jar archivoReglas.em archivoTexto.txt`
@@ -28,12 +29,28 @@
 	##Definicion de reglas
 	
 	$Todos los archivos de reglas deben tener la extensión .em$
-	
-	$Un archivo de reglas se puede dividir en 3 partes principales: las secciones *header*,*footer* y *body* $
+
+
+	$El intérprete permite al usuario definir nuevas reglas e incluso modificar las reglas por defecto.$
+	$Aquí podemos ver la estructura de un archivo de reglas en el cual se pueden identificar tres secciones diferentes, encabezado, cuerpo con la definición de reglas y pie de página.$
+
+
+	$ ** /header/ ** $
+		$...$
+	$ ** /header/ ** $
+	$ ** begin{ ** $
+		$Reglas simples$
+		$Reglas anidadas$
+		$Reglas compuestas$
+	$ ** } ** $
+	$ ** /footer/ ** $
+		$...$
+	$ ** /footer/ ** $
+
 	
 	###Sección header
 	
-	$Se puede incluir al comienzo del archivo, mediante los delimitadores */header/* , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al incio del archivo resultado$
+	$Se puede incluir al comienzo del archivo, mediante los delimitadores */header/* , todo el texto que se encuentre entre dichos delimitadores no se modificará por el interprete y será ubicado al inicio del archivo resultado$
 	$En el archivo defaultHtmlRules.em podemos ver un ejemplo de header, el cual contiene la estructura de un documento html que va a ser igual para todas las traducciones que se apliquen$
 	
 	###Sección footer
@@ -49,15 +66,19 @@
 	####Reglas simples
 	
 	$La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal -> DelimitadorInicial text DelimitadorFinal$
-	$Por ejemplo: ` BOLD -> \*\* text \*\* -> \&lt;strong\&gt; text \&lt;/strong\&gt; `. Esta regla indica que siempre que se encuentre algo que comience con \*\* y termine con \*\* el interprete lo reemplazara por \&lt;strong\&gt; y \&lt;/strong\&gt;$
+	$Por ejemplo:$
+
+	$ ` BOLD -> \*\* text \*\* -> &lt;strong&gt; text &lt;/strong&gt; `  $ 
+
+	$Esta regla indica que siempre que se encuentre algo que comience con \*\* y termine con \*\* el interprete lo reemplazara por &lt;strong&gt; y &lt;/strong&gt; $
 	
 	####Reglas anidadas
 	$Toda regla anidada debe comenzar con 'nested{' y terminar con '}', en su interior puede contener hasta 3 reglas simples$
 	$Por ejemplo:$ 
-	`nested{
-		$LIST -> text ->  \&lt;ul\&gt; text \&lt;/ul\&gt;$
-		$ITEM -> - text -> \&lt;li\&gt; text \&lt;/li\&gt;$
-	}`
+	`nested{`
+		$ ` LIST -> text ->  &lt;ul&gt; text &lt;/ul&gt; ` $
+		$ ` ITEM -> - text -> &lt;li&gt; text &lt;/li&gt; ` $
+	`}`
 	$Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "\&lt;li\&gt;" y "\&lt;/li\&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "\&lt;ul\&gt;" y "\&lt;/ul\&gt;" respectivamente$
 	
 	####Reglas compuestas 
