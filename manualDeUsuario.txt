@@ -71,6 +71,17 @@
 	$ ` BOLD -> \*\* text \*\* -> &lt;strong&gt; text &lt;/strong&gt; `  $ 
 
 	$Esta regla indica que siempre que se encuentre algo que comience con \*\* y termine con \*\* el interprete lo reemplazara por &lt;strong&gt; y &lt;/strong&gt; $
+
+	$Ejemplo de texto que machea con esta regla:$
+
+	$Texto sin parsear: $
+
+	$ ` La casa del árbol es de color \*\*azul\*\*. ` $
+
+	$Texto luego de aplicar el parser: $
+
+	$ ` La casa del árbol es de color &lt;strong&gt;azul&lt;/strong&gt;. ` $
+
 	
 	####Reglas anidadas
 	$Toda regla anidada debe comenzar con 'nested{' y terminar con '}', en su interior puede contener hasta 3 reglas simples$
@@ -79,7 +90,24 @@
 		$ ` LIST -> text ->  &lt;ul&gt; text &lt;/ul&gt; ` $
 		$ ` ITEM -> - text -> &lt;li&gt; text &lt;/li&gt; ` $
 	`}`
-	$Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "\&lt;li\&gt;" y "\&lt;/li\&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "\&lt;ul\&gt;" y "\&lt;/ul\&gt;" respectivamente$
+	$Esta regla anidada define una lista indicando que los items comienzan con un "-" y seran reemplazados por "&lt;li&gt;" y "&lt;/li&gt;" y, además, se delimitará en el archivo resultado el comienzo y final de la lista con "&lt;ul&gt;" y "&lt;/ul&gt;" respectivamente.$
+
+	$Ejemplo de texto que machea con esta regla:$
+
+	$Texto sin parsear:$
+
+    	$ `- elemento1` $
+    	$ `- elemento2` $
+    	$ `- elemento3` $
+
+	$Texto luego de aplicar el parser:$
+	
+	$`&lt;ul&gt;`$
+    	$`&lt;li&gt;elemento1&lt;/li&gt;`$
+   		$`&lt;li&gt;elemento2&lt;/li&gt;`$
+    	$`&lt;li&gt;elemento3&lt;/li&gt;`$
+	$`&lt;/ul&gt;`$
+	
 	
 	####Reglas compuestas 
 	$La estructura es: NombreRegla -> DelimitadorInicial text DelimitadorFinal ( literal ) -> Delimitador1 literal Delimitador2 text Delimitador3$
@@ -87,6 +115,17 @@
 	Son similares a las reglas simples con la diferencia de que su expresión original está formada por la expresión igual que en la regla simple (en este caso es "![ text ]" ) seguida de ( literal ).
 	Luego en la traducción se puede usar la variable "literal" en cualquier lado, al igual que "text".$
 	$Ejemplo: ` LINK -> [ text ] ( literal ) -> <a_href=" literal "> text </a> ` $
+
+	$Ejemplo de texto que machea con esta regla:$
+
+	$Texto sin parsear:$
+
+	$`\[google\](https://www.google.com.ar)`$
+
+	$Texto luego de aplicar el parser:$
+
+	$` &lt;a href="https://www.google.com.ar"&gt;google&lt;/a&gt;`$
+
 	
 	##Interfaz gráfica
 	$Al abrir el programa nos encontraremos con la siguiente pantalla:$
